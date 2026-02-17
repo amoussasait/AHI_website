@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "devCommand": "next dev",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": {
+      "description": "The public URL of the site",
+      "required": true,
+      "default": "https://www.havenz.ai/datacentre"
+    }
+  },
+  "regions": ["iad1"]
+}

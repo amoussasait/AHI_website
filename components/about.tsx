@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { Zap, Building2, Gauge, Layers, Droplets, Network } from "lucide-react"
+import { Zap, Building2, Gauge, Layers, Droplets, Network, BatteryFull, ArrowLeftRight, Droplet, Shield } from "lucide-react"
+import Image from "next/image"
 
 export default function About() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
@@ -77,12 +78,13 @@ export default function About() {
 
   const chartItems = [
     "250MW+ On-Site Prime Power",
-    "50MW Solar Integration",
     "300MW Battery Storage",
-    "250+ On-Site Backup Capacity",
-    "Grid Interconnection (Import & Export)",
+    "150MW Grid Import / Export",
+    "Immersion & Liquid-to-Chip Cooling",
+    "Dual-Path Fiber | 400G+ Scalable",
     "PUE 1.03 Performance",
-    "ESG Aligned",
+    "Waterless / Ultra-Low Water Design",
+    "N+1 Redundant Architecture",
   ]
 
   return (
@@ -156,23 +158,50 @@ export default function About() {
             <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
               Integrated energy and infrastructure capabilities powering next-generation AI workloads.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {chartItems.map((item, i) => {
-                const icons = ["250MW+", "50MW", "300MW", "250+", "Grid", "1.03", "ESG"]
-                return (
-                  <motion.div
-                    key={item}
-                    className="relative group p-5 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 text-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ delay: 0.4 + i * 0.08 }}
-                  >
-                    <div className="text-2xl font-bold text-primary mb-2">{icons[i]}</div>
-                    <p className="text-sm text-white font-medium leading-snug">{item}</p>
-                    <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </motion.div>
-                )
-              })}
+            <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+              {/* Left: capability items in single column */}
+              <div className="flex flex-col gap-3.5 flex-1 min-w-0 max-w-[50%]">
+                {(() => {
+                  const items = [
+                    { icon: Zap,           stat: "250MW+",    label: "250MW+ On-Site Prime Power" },
+                    { icon: BatteryFull,   stat: "300MW",     label: "300MW Battery Storage" },
+                    { icon: ArrowLeftRight,stat: "150MW",     label: "150MW Grid Import / Export" },
+                    { icon: Droplets,      stat: "Cooling",   label: "Immersion & Liquid-to-Chip Cooling" },
+                    { icon: Network,       stat: "400G+",     label: "Dual-Path Fiber | 400G+ Scalable" },
+                    { icon: Gauge,         stat: "1.03",      label: "PUE 1.03 Performance" },
+                    { icon: Droplet,       stat: "Waterless", label: "Waterless / Ultra-Low Water Design" },
+                    { icon: Shield,        stat: "N+1",       label: "N+1 Redundant Architecture" },
+                  ]
+                  return items.map((item, i) => {
+                    const Icon = item.icon
+                    return (
+                      <motion.div
+                        key={item.label}
+                        className="relative group flex items-center gap-4 px-5 py-4 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 min-h-[90px]"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                        transition={{ delay: 0.3 + i * 0.07 }}
+                      >
+                        <Icon className="w-6 h-6 text-primary shrink-0" />
+                        <span className="text-xl font-bold text-primary w-24 shrink-0">{item.stat}</span>
+                        <span className="text-base text-white font-medium leading-snug">{item.label}</span>
+                        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.div>
+                    )
+                  })
+                })()}
+              </div>
+              {/* Right: architecture diagram */}
+              <div className="flex-1 overflow-hidden">
+                <Image
+                  src="/images/ahi-ecosystem-architecture.png"
+                  alt="AHI Ecosystem Architecture"
+                  width={800}
+                  height={980}
+                  className="w-full h-full object-contain object-top"
+                  style={{ mixBlendMode: "screen", maxHeight: "100%", transform: "translateY(-40px) translateX(30px)" }}
+                />
+              </div>
             </div>
           </motion.div>
         </motion.div>

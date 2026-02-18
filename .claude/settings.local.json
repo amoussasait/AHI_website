@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -Command \"Copy-Item ''C:\\Users\\amoussa\\Downloads\\ChatGPT Image Feb 17, 2026, 04_32_06 PM.png'' ''C:\\Users\\amoussa\\OneDrive - Southern Alberta Institute of Technology\\Desktop\\MapleDigiTech\\ahi-data-centre-website\\public\\images\\ahi-ecosystem-architecture.png'' -Force\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

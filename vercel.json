@@ -7,7 +7,7 @@
     "NEXT_PUBLIC_SITE_URL": {
       "description": "The public URL of the site",
       "required": true,
-      "default": "https://www.havenz.ai/datacentre"
+      "default": "https://ahiwebsite.vercel.app"
     }
   },
   "regions": ["iad1"]

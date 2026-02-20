@@ -5,10 +5,12 @@ import PageLayout from "@/components/page-layout"
 import { Check, Zap, Server, Network, Shield } from "lucide-react"
 import Link from "next/link"
 import DatacenterClusterView from "@/components/datacenter-cluster-view"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function StarterNodePage() {
   return (
     <PageLayout title="Starter Node" subtitle="Entry-level dedicated compute for AI startups and research labs">
+      <DatacenterBackground />
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-12">

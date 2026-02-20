@@ -1,8 +1,11 @@
 "use client"
 
+import DatacenterBackground from "@/components/datacenter-background"
+
 export default function CookiePolicy() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-secondary via-background to-background py-12 px-4">
+      <DatacenterBackground />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold mb-8 text-primary">Cookie Policy</h1>
 

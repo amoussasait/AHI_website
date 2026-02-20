@@ -8,6 +8,7 @@ import { useState } from "react"
 import Link from "next/link"
 import DenvrPartnership from "@/components/denvr-partnership"
 import GridBottleneck from "@/components/grid-bottleneck"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function ComputePage() {
   const [inquiryForm, setInquiryForm] = useState({ name: "", email: "", message: "" })
@@ -95,6 +96,7 @@ export default function ComputePage() {
       title="Flexible Compute. Infinite Scalability."
       subtitle="From startups to hyperscalers, find the perfect capacity for your AI workloads"
     >
+      <DatacenterBackground />
       <GridBottleneck />
 
       {/* Package Cards */}

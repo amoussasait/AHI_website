@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import PageLayout from "@/components/page-layout"
 import { Mail, Linkedin } from "lucide-react"
 import { useState } from "react"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" })
@@ -37,6 +38,7 @@ export default function ContactPage() {
 
   return (
     <PageLayout title="Get in Touch" subtitle="Let's discuss how AHI Data Centre can power your AI future">
+      <DatacenterBackground />
       {/* Contact Section */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="grid md:grid-cols-2 gap-12">

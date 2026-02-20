@@ -5,6 +5,7 @@ import FourPillars from "@/components/four-pillars"
 import ScopeMandates from "@/components/scope-mandates"
 import HeavyPowerUsers from "@/components/heavy-power-users"
 import ConstructionProgress from "@/components/construction-progress"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function AboutPage() {
   const specs = [
@@ -35,6 +36,7 @@ export default function AboutPage() {
       title="AI Compute Meets Clean Energy"
       subtitle="Canada's sovereign infrastructure powered by innovation and partnership"
     >
+      <DatacenterBackground />
       {/* Facility Overview */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-center">

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import PageLayout from "@/components/page-layout"
 import { MapPin, Navigation, Wifi, Zap } from "lucide-react"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function LocationPage() {
   return (
@@ -10,6 +11,7 @@ export default function LocationPage() {
       title="Strategically Located at the Heart of Alberta's Innovation Corridor"
       subtitle="Red Deer: The Gateway to North American AI Infrastructure"
     >
+      <DatacenterBackground />
       {/* Strategic Position */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <motion.div

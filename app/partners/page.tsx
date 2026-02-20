@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import PageLayout from "@/components/page-layout"
 import Image from "next/image"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function PartnersPage() {
   const partnerCategories = [
@@ -149,6 +150,7 @@ export default function PartnersPage() {
       title="Powering Innovation Across Canada"
       subtitle="A coalition of world-class partners committed to sovereign AI infrastructure"
     >
+      <DatacenterBackground />
       {/* Partner Categories */}
       <section className="max-w-7xl mx-auto px-4 py-20">
         {partnerCategories.map((cat, catIdx) => (

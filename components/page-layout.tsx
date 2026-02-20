@@ -3,8 +3,7 @@
 import type React from "react"
 import Navigation from "./navigation"
 import Footer from "./footer"
-import ParticleBackground from "./particle-background"
-import DataFlowOverlay from "./data-flow-overlay"
+import DatacenterBackground from "./datacenter-background"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 
@@ -33,8 +32,7 @@ export default function PageLayout({ children, title, subtitle }: PageLayoutProp
 
   return (
     <main className="w-full overflow-hidden bg-gradient-to-b from-secondary via-background to-background">
-      <ParticleBackground />
-      <DataFlowOverlay />
+      <DatacenterBackground />
       <Navigation scrolled={scrolled} />
 
       {/* Page Header */}

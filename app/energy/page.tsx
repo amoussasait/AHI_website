@@ -3,7 +3,6 @@
 import { motion } from "framer-motion"
 import PageLayout from "@/components/page-layout"
 import { Zap, Wind, Droplets, Leaf } from "lucide-react"
-import DatacenterBackground from "@/components/datacenter-background"
 
 export default function EnergyPage() {
   const systems = [
@@ -42,7 +41,6 @@ export default function EnergyPage() {
       title="Powering the Future with Clean Energy"
       subtitle="Advanced energy systems designed for sustainability and sovereign AI infrastructure"
     >
-      <DatacenterBackground />
       {/* Energy Systems Overview */}
       <section className="max-w-7xl mx-auto px-4 py-20">
         <div className="grid md:grid-cols-2 gap-8 mb-12">

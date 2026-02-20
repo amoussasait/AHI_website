@@ -1,5 +1,4 @@
 import PageLayout from "@/components/page-layout"
-import DatacenterBackground from "@/components/datacenter-background"
 
 export const metadata = {
   title: "AI Infrastructure | AHI AI Hub of Innovation",
@@ -8,8 +7,10 @@ export const metadata = {
 
 export default function AIInfrastructurePage() {
   return (
-    <PageLayout>
-      <DatacenterBackground />
+    <PageLayout
+      title="Accelerating AI Innovation at Scale"
+      subtitle="Enterprise-grade GPU infrastructure with sovereign data processing and high-performance networking"
+    >
       <section className="pt-8 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance">

@@ -6,12 +6,13 @@ import { Check, Zap, Server, Network, Shield, TrendingUp, Lock } from "lucide-re
 import Link from "next/link"
 import DatacenterClusterView from "@/components/datacenter-cluster-view"
 import Generator3D from "@/components/generator-3d"
-import DatacenterBackground from "@/components/datacenter-background"
 
 export default function EnterprisePage() {
   return (
-    <PageLayout title="Enterprise Cluster" subtitle="Private compute zones for HPC and AI workloads at scale">
-      <DatacenterBackground />
+    <PageLayout
+      title="Enterprise-Grade Power for Mission-Critical AI"
+      subtitle="Dedicated 5-10MW clusters with private networks, advanced SLAs, and white-glove support"
+    >
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">

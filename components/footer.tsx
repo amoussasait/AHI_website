@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Linkedin, Twitter, Youtube, Mail } from "lucide-react"
+import { Linkedin, Youtube, Mail } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -12,10 +12,13 @@ export default function Footer() {
     {
       title: "Pages",
       links: [
-        { label: "About", href: "/about" },
-        { label: "Compute", href: "/compute" },
+        { label: "Home", href: "/" },
+        { label: "Platform", href: "/platform" },
         { label: "Energy", href: "/energy" },
+        { label: "AI Infrastructure", href: "/ai-infrastructure" },
+        { label: "Cloud", href: "/cloud" },
         { label: "Location", href: "/location" },
+        { label: "HavenzHub", href: "/havenzhub" },
         { label: "Partners", href: "/partners" },
         { label: "Contact", href: "/contact" },
       ],
@@ -39,10 +42,9 @@ export default function Footer() {
   ]
 
   const socialLinks = [
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Youtube, href: "#", label: "YouTube" },
-    { icon: Mail, href: "#", label: "Email" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/havenz-smart-communities/?viewAsMember=true", label: "LinkedIn" },
+    { icon: Youtube, href: "https://www.youtube.com/@havenzsmartcommunities", label: "YouTube" },
+    { icon: Mail, href: "mailto:info@havenzcorp.com", label: "Email" },
   ]
 
   return (
@@ -150,6 +152,8 @@ export default function Footer() {
                 <motion.a
                   key={i}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:border-primary hover:bg-primary/10 transition-all"
                   whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(0, 255, 200, 0.3)" }}
                   whileTap={{ scale: 0.95 }}

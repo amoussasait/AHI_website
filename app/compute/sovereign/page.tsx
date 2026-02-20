@@ -6,12 +6,13 @@ import { Check, Zap, Server, Network, Shield, Globe, Lock, Building } from "luci
 import Link from "next/link"
 import DatacenterClusterView from "@/components/datacenter-cluster-view"
 import Generator3D from "@/components/generator-3d"
-import DatacenterBackground from "@/components/datacenter-background"
 
 export default function SovereignPage() {
   return (
-    <PageLayout title="Sovereign Suite" subtitle="Custom modular halls for hyperscale and national AI projects">
-      <DatacenterBackground />
+    <PageLayout
+      title="Sovereign Infrastructure for National Ambitions"
+      subtitle="Custom 50MW+ deployments designed for hyperscale enterprises and government initiatives"
+    >
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">

@@ -76,9 +76,8 @@ export default function Footer() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="/logos/ahi-logo.png" alt="AHI Data Centre" width={32} height={32} className="w-8 h-8" />
-              <span className="font-bold text-white">AHI Data Centre</span>
+            <Link href="/" className="flex items-center mb-4">
+              <Image src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI AI Hub of Innovation" width={180} height={45} className="h-10 w-auto" />
             </Link>
             <p className="text-muted-foreground text-sm">
               Canada's first hydrogen-ready AI compute and data infrastructure campus.

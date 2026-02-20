@@ -35,7 +35,7 @@ export default function Hero() {
         animate="visible"
       >
         <motion.h1
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-tight"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-tight px-2"
           variants={itemVariants}
         >
           <span className="text-white">{"Canada's Sovereign AI & Energy Campus"} </span>
@@ -44,14 +44,14 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        <motion.div className="mb-12 max-w-3xl mx-auto" variants={itemVariants}>
-          <p className="text-lg sm:text-xl text-white/90 mb-2">
+        <motion.div className="mb-12 max-w-3xl mx-auto px-4" variants={itemVariants}>
+          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-2">
             Prime, dispatchable, behind-the-meter power under construction in Alberta.
           </p>
-          <p className="text-lg sm:text-xl text-white/90 mb-8">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8">
             Initial capacity delivering in 2026.
           </p>
-          <div className="flex flex-row justify-center gap-4 w-full max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl mx-auto">
             {[
               { icon: Zap, label: "250MW+ On-Site Prime Power" },
               { icon: ArrowLeftRight, label: "Grid Import & 150MW Export Capability" },
@@ -60,7 +60,7 @@ export default function Hero() {
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center justify-center gap-3 px-8 py-5 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center w-64 shrink-0 grow"
+                className="flex flex-col items-center justify-center gap-3 px-4 sm:px-6 lg:px-8 py-5 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center"
               >
                 <div className="w-11 h-11 rounded-full bg-primary/15 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-primary" />
@@ -74,10 +74,10 @@ export default function Hero() {
           </p>
         </motion.div>
 
-        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mb-16" variants={itemVariants}>
-          <Link href="/contact">
+        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 px-4" variants={itemVariants}>
+          <Link href="/contact" className="w-full sm:w-auto">
             <motion.button
-              className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(0, 255, 200, 0.4)" }}
               whileTap={{ scale: 0.95 }}
             >
@@ -85,9 +85,9 @@ export default function Hero() {
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </Link>
-          <Link href="/compute">
+          <Link href="/compute" className="w-full sm:w-auto">
             <motion.button
-              className="px-8 py-3 rounded-full border border-primary/50 text-primary font-semibold hover:border-primary hover:bg-primary/5 transition-colors"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full border border-primary/50 text-primary font-semibold hover:border-primary hover:bg-primary/5 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -97,7 +97,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-items-center"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 items-center justify-items-center max-w-5xl mx-auto"
           variants={itemVariants}
         >
           {[
@@ -120,12 +120,12 @@ export default function Hero() {
           ].map((partner) => (
             <div
               key={partner.name}
-              className="px-6 py-4 border border-primary/30 rounded-lg hover:border-primary/60 transition-all h-28 w-full flex items-center justify-center"
+              className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border border-primary/30 rounded-lg hover:border-primary/60 transition-all h-20 sm:h-24 md:h-28 w-full flex items-center justify-center"
             >
               <img
                 src={partner.logo || "/placeholder.svg"}
                 alt={partner.name}
-                className="max-h-16 max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
+                className="max-h-12 sm:max-h-14 md:max-h-16 max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
             </div>
           ))}

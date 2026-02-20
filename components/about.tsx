@@ -160,7 +160,7 @@ export default function About() {
             </p>
             <div className="flex flex-col lg:flex-row gap-8 items-stretch">
               {/* Left: capability items in single column */}
-              <div className="flex flex-col gap-3.5 flex-1 min-w-0 max-w-[50%]">
+              <div className="flex flex-col gap-3.5 flex-1 min-w-0 lg:max-w-[50%]">
                 {(() => {
                   const items = [
                     { icon: Zap,           stat: "250MW+",    label: "250MW+ On-Site Prime Power" },
@@ -198,8 +198,8 @@ export default function About() {
                   alt="AHI Ecosystem Architecture"
                   width={800}
                   height={980}
-                  className="w-full h-full object-contain object-top"
-                  style={{ mixBlendMode: "screen", maxHeight: "100%", transform: "translateY(-40px) translateX(30px)" }}
+                  className="w-full h-full object-contain object-top lg:translate-y-[-40px] lg:translate-x-[30px]"
+                  style={{ mixBlendMode: "screen", maxHeight: "100%" }}
                 />
               </div>
             </div>

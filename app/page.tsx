@@ -18,6 +18,7 @@ import SectionDividerAnimated from "@/components/section-divider-animated"
 import DenvrPartnership from "@/components/denvr-partnership"
 import FourPillars from "@/components/four-pillars"
 import ConstructionProgress from "@/components/construction-progress"
+import DatacenterBackground from "@/components/datacenter-background"
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
@@ -37,6 +38,7 @@ export default function Home() {
 
   return (
     <main className="w-full overflow-hidden bg-gradient-to-b from-secondary via-background to-background">
+      <DatacenterBackground />
       <Navigation scrolled={scrolled} />
       <Hero />
       <SectionDividerAnimated />

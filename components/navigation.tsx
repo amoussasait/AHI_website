@@ -55,7 +55,6 @@ export default function Navigation({ scrolled = false }: NavigationProps) {
     { label: "Location", href: "/location" },
     { label: "HavenzHub", href: "/havenzhub" },
     { label: "Partners", href: "/partners" },
-    { label: "Contact", href: "/contact" },
   ]
 
   const isActive = (href: string) => pathname === href

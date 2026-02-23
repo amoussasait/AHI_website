@@ -8,21 +8,11 @@ export const metadata = {
 export default function AIInfrastructurePage() {
   return (
     <PageLayout
-      title="Accelerating AI Innovation at Scale"
-      subtitle="Enterprise-grade GPU infrastructure with sovereign data processing and high-performance networking"
+      title="AI Infrastructure"
+      subtitle="Purpose-built AI compute infrastructure delivering the performance, security, and scalability that enterprise AI workloads demand"
     >
       <section className="pt-8 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance">
-            <span className="text-white">AI </span>
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Infrastructure
-            </span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-12">
-            Purpose-built AI compute infrastructure delivering the performance, security, and scalability that enterprise AI workloads demand.
-          </p>
-
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             {[
               {

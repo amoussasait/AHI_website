@@ -51,7 +51,7 @@ export default function About() {
     {
       icon: Gauge,
       title: "PERFORMANCE DESIGN",
-      headline: "PUE 1.03 | Waterless & Ultra-Low Water",
+      headline: "PUE 1.04 | Waterless & Ultra-Low Water",
       description:
         "High-efficiency infrastructure designed for waterless operation or ultra-low water configurations, depending on deployment architecture.",
       footer:
@@ -82,7 +82,7 @@ export default function About() {
     "150MW Grid Import / Export",
     "Immersion & Liquid-to-Chip Cooling",
     "Dual-Path Fiber | 400G+ Scalable",
-    "PUE 1.03 Performance",
+    "PUE 1.04 Performance",
     "Waterless / Ultra-Low Water Design",
     "N+1 Redundant Architecture",
   ]
@@ -168,7 +168,7 @@ export default function About() {
                     { icon: ArrowLeftRight,stat: "150MW",     label: "150MW Grid Import / Export" },
                     { icon: Droplets,      stat: "Cooling",   label: "Immersion & Liquid-to-Chip Cooling" },
                     { icon: Network,       stat: "400G+",     label: "Dual-Path Fiber | 400G+ Scalable" },
-                    { icon: Gauge,         stat: "1.03",      label: "PUE 1.03 Performance" },
+                    { icon: Gauge,         stat: "1.04",      label: "PUE 1.04 Performance" },
                     { icon: Droplet,       stat: "Waterless", label: "Waterless / Ultra-Low Water Design" },
                     { icon: Shield,        stat: "N+1",       label: "N+1 Redundant Architecture" },
                   ]
@@ -194,14 +194,124 @@ export default function About() {
               {/* Right: architecture diagram */}
               <div className="flex-1 overflow-hidden">
                 <Image
-                  src="/images/ahi-ecosystem-architecture.png"
+                  src="/images/ai-compute-architecture.png"
                   alt="AHI Ecosystem Architecture"
                   width={800}
                   height={980}
-                  className="w-full h-full object-contain object-top lg:translate-y-[-40px] lg:translate-x-[30px]"
+                  className="w-full h-full object-contain object-center"
                   style={{ mixBlendMode: "screen", maxHeight: "100%" }}
                 />
               </div>
+            </div>
+          </motion.div>
+
+          {/* Divider */}
+          <motion.div
+            className="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent my-16"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent blur-sm" />
+          </motion.div>
+
+          {/* Modular Super Cluster (MSC) Section */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-3xl font-bold text-white text-center mb-3">Modular Super Cluster (MSC)</h3>
+            <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+              Unit Specifications
+            </p>
+
+            {/* Power & Performance */}
+            <div className="mb-12">
+              <h4 className="text-2xl font-bold text-primary mb-6">Power & Performance</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                {[
+                  { label: "Power Per MSC", value: "6,500 kW (6.5 MW)" },
+                  { label: "PUE", value: "1.04" },
+                  { label: "Server Nodes", value: "512 High-Density AI Server Nodes" },
+                  { label: "GPU Count", value: "4,096 GPUs" },
+                  { label: "Cooling Architecture", value: "Liquid Immersion Cooling (AI-Density Ready)" },
+                  { label: "Reserved Backup Power (25%)", value: "1,625 kW (1.625 MW) – Dedicated Standby Per MSC" },
+                  { label: "Total Power Envelope Per MSC", value: "8,125 kW (8.125 MW) – Prime + Reserved Standby" },
+                  { label: "Contract Term", value: "Up to 25 years" },
+                  { label: "GPU Platform Compatibility", value: "Supports NVIDIA H100 / H200 / B200 / B300 architectures – Up to 5-Year manufacturer lifecycle support" },
+                ].map((spec, i) => (
+                  <motion.div
+                    key={spec.label}
+                    className="p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
+                  >
+                    <div className="text-sm font-semibold text-primary mb-2">{spec.label}</div>
+                    <div className="text-base text-white">{spec.value}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* 3D Rendering Image */}
+              <motion.div
+                className="relative rounded-xl overflow-hidden border border-primary/20 bg-secondary/30"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ delay: 0.5 }}
+              >
+                <Image
+                  src="/images/mcs.png"
+                  alt="Modular Super Cluster 3D Rendering"
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* What's Included */}
+            <div>
+              <h4 className="text-2xl font-bold text-primary mb-6">What's Included with Every MSC</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                {[
+                  "Utility-grade power delivery",
+                  "Access to Reserved Backup Power",
+                  "Liquid Immersion Cooling Infrastructure",
+                  "Physical security & controlled access",
+                  "Full facility management",
+                  "Environmental monitoring – 24/7/365",
+                  "Fire detection & suppression systems",
+                ].map((item, i) => (
+                  <motion.div
+                    key={item}
+                    className="flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
+                  >
+                    <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                    <span className="text-white">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Turntable Video */}
+              <motion.div
+                className="relative rounded-xl overflow-hidden border border-primary/20 bg-secondary/30"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ delay: 0.6 }}
+              >
+                <video
+                  className="w-full h-auto object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src="/videos/ahi-layout-turntable.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>

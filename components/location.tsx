@@ -26,6 +26,30 @@ export default function Location() {
       desc: "Major rail, highway, and transportation corridor junction",
       detail: "North American supply chain gateway",
     },
+    {
+      icon: Globe,
+      title: "Regulatory & Tax Advantage",
+      desc: "Alberta's Most Competitive AI Jurisdiction",
+      detail: "5% provincial tax, no PST, business-friendly regulatory environment",
+    },
+    {
+      icon: Zap,
+      title: "Data Centre Levy Mitigation",
+      desc: "Structurally Optimized Power Model",
+      detail: "Behind-the-fence generation reduces exposure to Alberta's ≥75MW Data Centre Levy",
+    },
+    {
+      icon: MapPin,
+      title: "Strategic Corridor Access",
+      desc: "Talent, Security & Market Reach",
+      detail: "4.5M people within 100 miles + 19-minute RCMP proximity",
+    },
+    {
+      icon: Clock,
+      title: "Low-Risk Operating Environment",
+      desc: "Stable, Resilient Jurisdiction",
+      detail: "No flood zone, no hurricane exposure, politically stable province",
+    },
   ]
 
   return (
@@ -58,14 +82,17 @@ export default function Location() {
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="aspect-video bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden">
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-              >
-                <MapPin className="w-12 h-12 text-primary/60" />
-              </motion.div>
+            <div className="aspect-video bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg mb-4 relative overflow-hidden">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d320636.8739489283!2d-114.22950968906248!3d52.26881949999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5374e9e7c88c24c3%3A0xf0fb9c5dc3c29e3f!2sRed%20Deer%20County%2C%20AB%2C%20Canada!5e0!3m2!1sen!2sca!4v1709582947321!5m2!1sen!2sca"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full"
+              ></iframe>
             </div>
             <h3 className="text-xl font-bold text-white mb-3">Canada's Prime Location</h3>
             <p className="text-muted-foreground mb-6 leading-relaxed">

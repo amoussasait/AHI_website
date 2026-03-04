@@ -34,8 +34,14 @@ const partners = [
   { name: "GGA Architecture", logo: "/images/gga-architecture-white.webp", color: "from-teal-500" },
   { name: "Lionstooth Energy", logo: "/images/lte-logo-white.webp", color: "from-orange-500" },
   { name: "Full Spectrum Energy", logo: "/images/fsp-logo-2019-white.webp", color: "from-yellow-500" },
-  { name: "Maurice Law", logo: "/images/maurice-law-logo.jpeg", color: "from-green-500" },
+  { name: "Chandos Construction", logo: "/images/chandos-logo.png", color: "from-blue-600" },
+  { name: "Volker Stevin", logo: "/images/volker-stevin-logo.png", color: "from-gray-500" },
+  { name: "ISL Engineering", logo: "/images/isl-logo.png", color: "from-cyan-500" },
+  { name: "Havenz Smart Communities", logo: "/images/havenz-smart-communities-logo.png", color: "from-green-500" },
   { name: "Turning Stone Capital", logo: "/images/main-logo-white.webp", color: "from-rose-500" },
+  { name: "Red Deer County", logo: "/images/red-deer-county-logo.png", color: "from-red-600" },
+  { name: "Invest Alberta", logo: "/images/invest-alberta-logo.png", color: "from-blue-500" },
+  { name: "Western Canada Data Centre Alliance", logo: "/images/wcdda-logo.png", color: "from-purple-600" },
 ]
 
 export default function PartnerCarousel() {

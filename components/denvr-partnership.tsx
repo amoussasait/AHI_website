@@ -22,7 +22,7 @@ export default function DenvrPartnership() {
     },
     {
       icon: Zap,
-      stat: "1.03 PUE",
+      stat: "1.04 PUE",
       title: "High-Density Efficiency",
       description:
         "Advanced liquid cooling and integrated power optimization deliver industry-leading efficiency for AI workloads.",

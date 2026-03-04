@@ -123,13 +123,12 @@ export default function AboutPage() {
       {/* First Nations Partnership */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="bg-gradient-to-r from-secondary via-primary/10 to-secondary rounded-2xl p-12 border border-primary/20">
-          <h2 className="text-3xl font-bold mb-6 text-primary">Indigenous Partnership & Governance</h2>
+          <h2 className="text-3xl font-bold mb-6 text-primary">Governance, Finance & Affiliates</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-accent mb-4">Maurice Law LLP</h3>
+              <h3 className="text-xl font-semibold text-accent mb-4">Havenz Smart Communities</h3>
               <p className="text-accent mb-4">
-                Provides Indigenous legal expertise and governance frameworks ensuring respectful partnership with First
-                Nations communities. Guides compliance with Indigenous rights and cultural considerations.
+                Project sponsor and master developer responsible for strategic vision, capital structuring, land development, and integrated infrastructure delivery.
               </p>
             </div>
             <div>

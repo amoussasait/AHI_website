@@ -8,8 +8,8 @@ import Link from "next/link"
 const packages = [
   {
     name: "Flexible Deployment",
-    power: "Sub-1MW to 5MW",
-    subtitle: "Ideal for startups, research teams, and emerging AI workloads.",
+    power: "Sub-1MW to 6.5MW",
+    subtitle: "Private, secure data halls",
     tagline: "Designed for flexibility without long-term overcommitment.",
     features: [
       "Bring Your Own Compute (BYOC) or managed GPU cloud",
@@ -18,13 +18,14 @@ const packages = [
       "Shared or semi-dedicated infrastructure",
       "24/7 enterprise monitoring & support",
       "Seamless path to larger capacity tiers",
+      "Private, secure data hall deployment",
     ],
     highlighted: false,
   },
   {
     name: "Dedicated AI Infrastructure",
-    power: "5MW to 50MW",
-    subtitle: "Production-scale environments for enterprise and industrial AI.",
+    power: "6.5MW to 52MW",
+    subtitle: "Fully private, secured data halls",
     tagline: "Built for sustained, high-density AI operations.",
     features: [
       "BYOC or managed AI cloud deployment",
@@ -33,13 +34,14 @@ const packages = [
       "Enterprise-grade SLAs",
       "Advanced monitoring & analytics",
       "Multi-year reserved pricing options",
+      "Fully private and secured infrastructure",
     ],
     highlighted: true,
   },
   {
     name: "Sovereign-Scale AI Campus",
-    power: "50MW to 250MW+",
-    subtitle: "Private large-scale deployments for hyperscale, government, and national AI programs.",
+    power: "52MW to 300MW+",
+    subtitle: "Dedicated, fully private campus-scale data halls",
     tagline: "Engineered for national, hyperscale, and mission-critical AI infrastructure.",
     features: [
       "Dedicated modular capacity",
@@ -47,7 +49,8 @@ const packages = [
       "Custom architecture & compliance support",
       "On-site operations & technical teams",
       "Long-term energy-backed reliability",
-      "Expansion runway to 250MW+",
+      "Expansion runway to 300MW+",
+      "Campus-scale private deployment",
     ],
     highlighted: false,
   },

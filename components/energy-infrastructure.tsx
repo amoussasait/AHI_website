@@ -15,7 +15,7 @@ const infrastructure = [
   },
   {
     label: "Battery Storage",
-    value: "100 MW",
+    value: "300 MW",
     desc: "Grid stabilization & peak load",
     icon: Battery,
     benefit: "Peak demand management",
@@ -58,7 +58,7 @@ export default function EnergyInfrastructure() {
             </span>
           </h2>
           <p className="text-lg text-accent max-w-3xl mx-auto leading-relaxed">
-            250 MW of proven cogeneration, 100 MW of battery resilience, and 50 MW of solar integration—enabling
+            250 MW of proven cogeneration, 300 MW of battery resilience, and 50 MW of solar integration—enabling
             carbon-efficient, waterless AI compute with 99.99% uptime resilience. Hydrogen-ready infrastructure ensures
             long-term carbon-capture integration through Energy Haven and Havenz Carbon Terminal.
           </p>
@@ -125,25 +125,25 @@ export default function EnergyInfrastructure() {
               year: "Phase 1",
               title: "Core Cogeneration Launch",
               desc: "Rolls-Royce MTU engines operational providing 250 MW baseload power—ensuring independent, reliable compute operations from day one.",
-              status: "Operational",
+              status: "Operational & In Construction",
             },
             {
               year: "Phase 2",
-              title: "Solar Integration Deployment",
-              desc: "50 MW solar array activation delivering clean energy supplement, reducing grid dependency and enhancing environmental leadership.",
-              status: "Planned",
+              title: "Grid Interconnection",
+              desc: "Phase 3 AESO process enabling 150MW rapid-response grid export and import capability",
+              status: "In Progress",
             },
             {
               year: "Phase 3",
               title: "Battery System Activation",
-              desc: "100 MW energy storage launch enabling grid stabilization, peak load management, and emergency resilience for 99.99% uptime guarantee.",
+              desc: "300 MW energy storage launch enabling grid stabilization, peak load management, and emergency resilience for 99.99% uptime guarantee.",
               status: "Planned",
             },
             {
               year: "Phase 4",
-              title: "Hydrogen Transition Readiness",
-              desc: "Carbon-capture integration and hydrogen fuel conversion pathway—positioning AHI as Canada's long-term carbon-neutral AI infrastructure leader.",
-              status: "Roadmap",
+              title: "Solar Integration Deployment",
+              desc: "50 MW solar array activation delivering clean energy supplement, reducing grid dependency and enhancing environmental leadership.",
+              status: "Planned",
             },
           ].map((phase, i) => (
             <motion.div
@@ -166,11 +166,13 @@ export default function EnergyInfrastructure() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      phase.status === "Operational"
+                      phase.status === "Operational" || phase.status === "Operational & In Construction"
                         ? "bg-green-500"
-                        : phase.status === "Planned"
-                          ? "bg-accent"
-                          : "bg-muted-foreground"
+                        : phase.status === "In Progress"
+                          ? "bg-yellow-500"
+                          : phase.status === "Planned"
+                            ? "bg-accent"
+                            : "bg-muted-foreground"
                     }`}
                   />
                   <span className="text-xs font-semibold text-primary">{phase.status}</span>

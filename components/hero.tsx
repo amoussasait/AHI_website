@@ -114,8 +114,8 @@ export default function Hero() {
               name: "Chandos Construction",
             },
             {
-              logo: "/images/30705b-425e6232f0ed4fc69a41576ef6564764-mv2.png",
-              name: "Denvr Data Works",
+              logo: "/images/m3_logo.png",
+              name: "M3",
             },
           ].map((partner) => (
             <div

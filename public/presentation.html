@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AHI — Canada's Premier AI Infrastructure Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #141414;
+    --navy-mid: #1a1a1f;
+    --navy-light: #1f1f28;
+    --teal: #00ffc8;
+    --teal-mid: #00c2b3;
+    --teal-dark: #009e92;
+    --white: #ffffff;
+    --grey: #a0b4c8;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(0,255,200,0.15);
+    --slide-w: 1280px;
+    --slide-h: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #141414;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--white);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated background canvas */
+  #bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ── CONTROLS ── */
+  #controls {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(10,22,40,0.92);
+    border: 1px solid var(--card-border);
+    border-radius: 40px;
+    padding: 10px 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  #controls button {
+    background: none;
+    border: 1px solid var(--card-border);
+    color: var(--teal);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #controls button:hover { background: var(--teal); color: var(--navy); }
+  #slide-counter { font-family: 'Sora', sans-serif; font-size: 13px; color: var(--grey); min-width: 60px; text-align: center; }
+  .dot-nav { display: flex; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all .2s; }
+  .dot.active { background: var(--teal); width: 20px; border-radius: 3px; }
+
+  /* ── SLIDE WRAPPER ── */
+  #deck {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute;
+    width: min(var(--slide-w), 97vw);
+    height: min(var(--slide-h), calc(min(var(--slide-w), 97vw) * 0.5625));
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy) 50%, var(--navy) 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(60px) scale(0.97);
+    transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: all;
+  }
+  .slide.prev {
+    opacity: 0;
+    transform: translateX(-60px) scale(0.97);
+  }
+
+  /* shared top border accent */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--teal-mid), transparent);
+    z-index: 10;
+  }
+
+  /* ── LOGO ── */
+  .logo {
+    position: absolute;
+    top: 28px; left: 36px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 20;
+  }
+  .logo-icon {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+  }
+  .logo-text { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; color: var(--grey); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Move logo to top right for slides 1-12 */
+  #s1 .logo, #s2 .logo, #s3 .logo, #s4 .logo, #s5 .logo, #s6 .logo,
+  #s7 .logo, #s8 .logo, #s9 .logo, #s10 .logo, #s11 .logo, #s12 .logo {
+    left: auto;
+    right: 36px;
+  }
+
+  /* ── SLIDE LABEL ── */
+  .slide-label {
+    position: absolute;
+    bottom: 24px; right: 36px;
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── CONFID ── */
+  .confid {
+    position: absolute;
+    bottom: 24px; left: 36px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── BG PATTERNS ── */
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+  .bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+  }
+  .card-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+  .card-sub {
+    font-size: 13px;
+    color: var(--grey);
+    margin-top: 6px;
+  }
+
+  /* section heading */
+  .section-tag {
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-tag::before { content: ''; width: 20px; height: 2px; background: var(--teal); display: block; }
+
+  h1 { font-family: 'Sora', sans-serif; font-weight: 800; line-height: 1.05; font-size: 48px; }
+  h2 { font-family: 'Sora', sans-serif; font-weight: 700; line-height: 1.1; font-size: 36px; }
+  h3 { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 24px; }
+
+  .teal { color: var(--teal); }
+  .grey { color: var(--grey); }
+
+  ul.bullets { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  ul.bullets li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: var(--grey); line-height: 1.6;
+  }
+  ul.bullets li::before {
+    content: '▸';
+    color: var(--teal);
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 14px;
+  }
+
+  /* ────────────────────────────────────────── SLIDE 0: COVER */
+  #s0 { background: linear-gradient(135deg, #1a1a1f 0%, #141414 50%, #141414 100%); }
+  #s0 .cover-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 72px;
+  }
+  #s0 .eyebrow {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 20px;
+  }
+  #s0 h1 { font-size: clamp(42px, 4.5vw, 60px); color: white; max-width: 700px; }
+  #s0 .subtitle {
+    font-size: 18px;
+    color: var(--teal);
+    font-weight: 500;
+    margin-top: 20px;
+    font-family: 'Sora', sans-serif;
+  }
+  #s0 .divider { width: 48px; height: 3px; background: var(--teal); margin: 22px 0; border-radius: 2px; }
+  #s0 .meta { display: flex; gap: 24px; flex-wrap: wrap; }
+  #s0 .meta-item { font-size: 14px; color: var(--grey); }
+  #s0 .meta-item span { color: white; font-weight: 600; }
+  #s0 .cover-visual {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 42%;
+    background: linear-gradient(135deg, rgba(0,255,200,0.06), rgba(0,255,200,0.02));
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  #s0 .cover-visual-inner {
+    text-align: center;
+    padding: 40px;
+  }
+  #s0 .big-stat { font-family: 'Sora', sans-serif; font-size: 84px; font-weight: 800; color: var(--teal); line-height: 1; }
+  #s0 .big-stat-sub { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); margin-top: 8px; }
+  #s0 .cover-pills { display: flex; flex-direction: column; gap: 10px; margin-top: 36px; }
+  #s0 .pill { background: rgba(0,255,200,0.08); border: 1px solid rgba(0,255,200,0.2); border-radius: 20px; padding: 9px 18px; font-size: 13px; color: var(--grey); text-align: center; }
+
+  /* ────────────────────────────────────────── SLIDE 1: OPPORTUNITY */
+  #s1 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s1 h2 { font-size: 38px; color: white; margin-bottom: 8px; }
+  #s1 .sub { font-size: 15px; color: var(--teal); margin-bottom: 30px; font-family: 'Sora', sans-serif; }
+  #s1 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; align-content: start; }
+  #s1 .opp-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  #s1 .opp-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: rgba(0,255,200,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  #s1 .opp-text { font-size: 14px; color: var(--grey); line-height: 1.6; }
+  #s1 .opp-text strong { color: white; display: block; margin-bottom: 4px; font-size: 15px; }
+  #s1 .bottom-bar {
+    margin-top: 20px;
+    background: rgba(0,255,200,0.06);
+    border: 1px solid rgba(0,255,200,0.2);
+    border-radius: 8px;
+    padding: 16px 22px;
+    font-size: 14px;
+    color: var(--teal);
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ────────────────────────────────────────── SLIDE 2: PLATFORM OVERVIEW */
+  #s2 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; gap: 40px; }
+  #s2 .left { flex: 1; }
+  #s2 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s2 .sub { font-size: 15px; color: var(--teal); margin-bottom: 24px; font-family: 'Sora', sans-serif; }
+  #s2 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+  #s2 .right { width: 260px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+  #s2 .feat { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 14px 16px; }
+  #s2 .feat-label { font-size: 12px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Sora', sans-serif; margin-bottom: 5px; }
+  #s2 .feat-val { font-size: 15px; color: white; font-weight: 600; }
+
+  /* ────────────────────────────────────────── SLIDE 3: WHY AHI */
+  #s3 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s3 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s3 .sub { font-size: 15px; color: var(--teal); margin-bottom: 24px; font-family: 'Sora', sans-serif; }
+  #s3 .top-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+  #s3 .partner-card {
+    background: rgba(0,255,200,0.05);
+    border: 1px solid rgba(0,255,200,0.25);
+    border-radius: 10px;
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 20px;
+    flex: 1;
+  }
+  #s3 .partner-logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--teal);
+    letter-spacing: -1px;
+    min-width: 60px;
+  }
+  #s3 .partner-info { font-size: 14px; color: var(--grey); line-height: 1.6; }
+  #s3 .partner-info strong { display: block; color: white; margin-bottom: 6px; font-size: 16px; }
+  #s3 .partner-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  #s3 .ppill { background: rgba(255,255,255,0.06); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--grey); }
+
+  /* ────────────────────────────────────────── SLIDE 4: MSC */
+  #s4 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; gap: 32px; }
+  #s4 .left { flex: 1.1; }
+  #s4 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s4 .sub { font-size: 15px; color: var(--teal); margin-bottom: 22px; font-family: 'Sora', sans-serif; }
+  #s4 .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #s4 .right { width: 260px; display: flex; flex-direction: column; justify-content: center; }
+  #s4 .byoc-card {
+    background: linear-gradient(135deg, rgba(0,255,200,0.1), rgba(0,255,200,0.03));
+    border: 1px solid rgba(0,255,200,0.3);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  #s4 .byoc-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 14px;
+  }
+  #s4 .byoc-ref { font-size: 13px; color: var(--grey); margin-bottom: 10px; }
+  #s4 .byoc-gpu { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+  #s4 .byoc-nodes { font-size: 14px; color: white; }
+  #s4 .byoc-note { margin-top: 18px; font-size: 13px; color: var(--grey); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; }
+
+  /* ────────────────────────────────────────── SLIDE 5: POWER */
+  #s5 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; gap: 40px; }
+  #s5 .left { flex: 1; }
+  #s5 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s5 .sub { font-size: 15px; color: var(--teal); margin-bottom: 22px; font-family: 'Sora', sans-serif; }
+  #s5 .right { width: 220px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+  #s5 .power-stat {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+  }
+  #s5 .power-stat .val { font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; color: var(--teal); }
+  #s5 .power-stat .lbl { font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px; }
+
+  /* ────────────────────────────────────────── SLIDE 6: CAMPUS PLAN */
+  #s6 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s6 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s6 .sub { font-size: 15px; color: var(--teal); margin-bottom: 24px; font-family: 'Sora', sans-serif; }
+  #s6 .timeline { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  #s6 .phase {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    align-items: center;
+    gap: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    transition: background .2s;
+  }
+  #s6 .phase.highlight { background: rgba(0,255,200,0.07); border-color: rgba(0,255,200,0.3); }
+  #s6 .phase-badge {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    background: rgba(0,255,200,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+    text-align: center;
+  }
+  #s6 .phase.highlight .phase-badge { background: var(--teal); color: var(--navy); }
+  #s6 .phase-mw { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: white; }
+  #s6 .phase-mw span { font-size: 14px; color: var(--grey); font-weight: 400; }
+  #s6 .phase-desc { font-size: 14px; color: var(--grey); }
+  #s6 .site-note { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 12px; }
+
+  /* ────────────────────────────────────────── SLIDE 7: TIMELINE */
+  #s7 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s7 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s7 .sub { font-size: 15px; color: var(--teal); margin-bottom: 28px; font-family: 'Sora', sans-serif; }
+  #s7 .timeline-track { position: relative; flex: 1; display: flex; align-items: center; }
+  #s7 .track-line { position: absolute; top: 24px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), rgba(0,255,200,0.2)); }
+  #s7 .steps { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; width: 100%; position: relative; }
+  #s7 .step { display: flex; flex-direction: column; align-items: flex-start; }
+  #s7 .step-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-bottom: 14px;
+    box-shadow: 0 0 10px rgba(0,255,200,0.5);
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+  #s7 .step-name { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: var(--teal); margin-bottom: 5px; }
+  #s7 .step-weeks { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 10px; letter-spacing: 0.05em; }
+  #s7 .step-desc { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+  /* ────────────────────────────────────────── SLIDE 8: PRICING */
+  #s8 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; gap: 32px; }
+  #s8 .left { flex: 1; }
+  #s8 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s8 .sub { font-size: 15px; color: var(--teal); margin-bottom: 22px; font-family: 'Sora', sans-serif; }
+  #s8 .services-list { display: flex; flex-direction: column; gap: 7px; }
+  #s8 .svc-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; color: var(--grey);
+    padding: 9px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+  }
+  #s8 .svc-icon { color: var(--teal); font-size: 12px; flex-shrink: 0; }
+  #s8 .right { width: 280px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+  #s8 .term { padding: 14px 18px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; }
+  #s8 .term-label { font-size: 10px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Sora', sans-serif; margin-bottom: 4px; }
+  #s8 .term-val { font-size: 15px; color: white; font-weight: 600; }
+
+  /* ────────────────────────────────────────── SLIDE 9: REGULATORY */
+  #s9 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; gap: 40px; }
+  #s9 .left { flex: 1; }
+  #s9 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s9 .sub { font-size: 15px; color: var(--teal); margin-bottom: 22px; font-family: 'Sora', sans-serif; }
+  #s9 .right { width: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; }
+  #s9 .sov-badge {
+    background: rgba(0,255,200,0.06);
+    border: 1px solid rgba(0,255,200,0.25);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    width: 100%;
+  }
+  #s9 .sov-label { font-size: 10px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.12em; font-family: 'Sora', sans-serif; margin-bottom: 10px; }
+  #s9 .sov-num { font-family: 'Sora', sans-serif; font-size: 52px; font-weight: 800; color: var(--teal); line-height: 1; }
+  #s9 .sov-sub { font-size: 11px; color: var(--grey); margin-top: 6px; line-height: 1.4; }
+  #s9 .reg-chips { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  #s9 .chip {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--grey);
+    text-align: center;
+  }
+  #s9 .chip span { color: white; font-weight: 600; }
+
+  /* ────────────────────────────────────────── SLIDE 10: SECURITY */
+  #s10 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s10 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s10 .sub { font-size: 15px; color: var(--teal); margin-bottom: 22px; font-family: 'Sora', sans-serif; }
+  #s10 .sec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; flex: 1; align-content: start; }
+  #s10 .sec-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  #s10 .sec-card h4 { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+  #s10 .sec-card p { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+  /* ────────────────────────────────────────── SLIDE 11: TECH SPECS */
+  #s11 .content { position: absolute; inset: 0; padding: 52px 56px; display: flex; flex-direction: column; }
+  #s11 h2 { font-size: 36px; color: white; margin-bottom: 8px; }
+  #s11 .sub { font-size: 15px; color: var(--teal); margin-bottom: 18px; font-family: 'Sora', sans-serif; }
+  #s11 .specs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; flex: 1; align-content: start; }
+  #s11 .spec-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  #s11 .spec-block h4 { font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  #s11 .spec-row { font-size: 13px; color: var(--grey); display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  #s11 .spec-row:last-child { border-bottom: none; }
+  #s11 .spec-row span { color: white; font-weight: 500; text-align: right; }
+
+  /* ────────────────────────────────────────── SLIDE 12: CTA */
+  #s12 { background: linear-gradient(135deg, #1a1a1f 0%, #141414 60%, #141414 100%); }
+  #s12 .content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px; text-align: center; }
+  #s12 h2 { font-size: 44px; color: white; line-height: 1.1; margin-bottom: 14px; }
+  #s12 .tagline { font-size: 16px; color: var(--grey); margin-bottom: 44px; }
+  #s12 .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; width: 100%; max-width: 640px; }
+  #s12 .contact-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  #s12 .contact-card .clabel { font-family: 'Sora', sans-serif; font-size: 12px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  #s12 .contact-card .cval { font-size: 15px; color: white; font-weight: 500; }
+  #s12 .cta-btn {
+    margin-top: 28px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal);
+    color: var(--navy);
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 12px 28px;
+    border-radius: 40px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- Animated Background Canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<div id="deck">
+
+  <!-- ── SLIDE 0: COVER ── -->
+  <div class="slide active" id="s0">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:400px;height:400px;background:rgba(0,255,200,0.08);top:-100px;right:200px;"></div>
+    <div class="cover-visual">
+      <div class="cover-visual-inner">
+        <div class="big-stat">286</div>
+        <div class="big-stat-sub">MW at Full Build</div>
+        <div class="cover-pills">
+          <div class="pill">119 Acres · Red Deer, Alberta</div>
+          <div class="pill">44 Modular Super Clusters</div>
+          <div class="pill">Phase 1 · October 2026</div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-content">
+      <div class="logo">
+        <img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon">
+      </div>
+      <div class="eyebrow">Canada's Premier AI Infrastructure</div>
+      <h1>Sovereign AI Compute,<br><span class="teal">Purpose-Built.</span></h1>
+      <div class="subtitle">Canada's Premier AI Infrastructure Platform</div>
+      <div class="divider"></div>
+      <div class="meta">
+        <div class="meta-item">Location <span>Red Deer, Alberta</span></div>
+        <div class="meta-item">Campus <span>119 Acres</span></div>
+        <div class="meta-item">Capacity <span>286 MW</span></div>
+        <div class="meta-item">Date <span>March 2026</span></div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div>
+  </div>
+
+  <!-- ── SLIDE 1: OPPORTUNITY ── -->
+  <div class="slide" id="s1">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">The Opportunity</div>
+      <h2>Canada's AI Sovereignty Imperative</h2>
+      <div class="sub">Why purpose-built sovereign infrastructure matters now</div>
+      <div class="grid">
+        <div class="opp-card"><div class="opp-icon">🇨🇦</div><div class="opp-text"><strong>Growing Sovereign Demand</strong>Rising need for in-country AI compute — across government, enterprise, and research sectors.</div></div>
+        <div class="opp-card"><div class="opp-icon">⚖️</div><div class="opp-text"><strong>Data Residency Requirements</strong>Federal and provincial mandates under PIPEDA and emerging provincial legislation require Canadian data residency.</div></div>
+        <div class="opp-card"><div class="opp-icon">🔒</div><div class="opp-text"><strong>Hyperscaler Risk</strong>Dependency on US hyperscalers limits control over pricing, capacity allocation, and data sovereignty.</div></div>
+        <div class="opp-card"><div class="opp-icon">🚀</div><div class="opp-text"><strong>Expanding AI Ecosystem</strong>Canada's AI sector is growing rapidly — demanding purpose-built, high-density infrastructure at scale.</div></div>
+      </div>
+      <div class="bottom-bar">AHI positions Canada as the premier North American AI infrastructure hub — with competitive energy costs and full sovereign control.</div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">01</div>
+  </div>
+
+  <!-- ── SLIDE 2: PLATFORM OVERVIEW ── -->
+  <div class="slide" id="s2">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:300px;height:300px;background:rgba(0,255,200,0.06);bottom:-50px;right:-50px;"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="left">
+        <div class="section-tag">Platform Overview</div>
+        <h2>119-Acre Alberta Campus</h2>
+        <div class="sub">Zero Grid Dependency — Phased Deployment Model</div>
+        <ul class="bullets" style="margin-bottom:22px;">
+          <li>Purpose-built campus on Blindman Drive, Red Deer County, Alberta</li>
+          <li>286 MW total capacity at full build — up to 44 Modular Super Clusters (MSCs)</li>
+          <li>On-site natural gas power generation — independent of the electrical grid</li>
+          <li>Phased model: scale from 13 MW to 286 MW based on demand</li>
+        </ul>
+        <div class="stats-grid">
+          <div class="card"><div class="card-label">Total Capacity</div><div class="card-value teal">286 MW</div><div class="card-sub">At full build</div></div>
+          <div class="card"><div class="card-label">Full Build</div><div class="card-value teal">44 MSCs</div><div class="card-sub">Modular Super Clusters</div></div>
+          <div class="card"><div class="card-label">Campus</div><div class="card-value teal">119 Acres</div><div class="card-sub">Footprint</div></div>
+          <div class="card"><div class="card-label">Deployment</div><div class="card-value teal">20–24 Wks</div><div class="card-sub">Contract to live compute</div></div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="feat"><div class="feat-label">Power Source</div><div class="feat-val">On-site Natural Gas Generation</div></div>
+        <div class="feat"><div class="feat-label">Grid Dependency</div><div class="feat-val">Zero</div></div>
+        <div class="feat"><div class="feat-label">Cooling</div><div class="feat-val">Immersion Liquid</div></div>
+        <div class="feat"><div class="feat-label">PUE</div><div class="feat-val">1.037</div></div>
+        <div class="feat"><div class="feat-label">Uptime SLA</div><div class="feat-val">99.9%</div></div>
+        <div class="feat"><div class="feat-label">Connectivity</div><div class="feat-val">50 Gbps per MSC</div></div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">02</div>
+  </div>
+
+  <!-- ── SLIDE 3: WHY AHI ── -->
+  <div class="slide" id="s3">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">Why AHI</div>
+      <h2>Best-in-Class Infrastructure</h2>
+      <div class="sub">World-Class Technology Partner · Industry-Leading Efficiency</div>
+      <div class="top-stats">
+        <div class="card"><div class="card-label">Power Usage Effectiveness</div><div class="card-value teal">1.037</div><div class="card-sub">PUE — among industry's lowest</div></div>
+        <div class="card"><div class="card-label">All-In Build Cost</div><div class="card-value teal">&lt;$6M/MW</div><div class="card-sub">Fully bundled</div></div>
+        <div class="card"><div class="card-label">Time to Deploy</div><div class="card-value teal">6 Mo.</div><div class="card-sub">Contract to live compute</div></div>
+        <div class="card"><div class="card-label">Power Efficiency</div><div class="card-value teal">96%</div><div class="card-sub">System-wide efficiency</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-logo">Denvr</div>
+        <div class="partner-info">
+          <strong>Technology Partner: Denvr Dataworks</strong>
+          End-to-end modular data centre design, deployment, and operations expertise — powering the AHI campus infrastructure.
+          <div class="partner-pills">
+            <span class="ppill">NVIDIA Elite Partner</span>
+            <span class="ppill">143+ Patents</span>
+            <span class="ppill">14+ GW Deployed Globally</span>
+            <span class="ppill">200+ Years Combined Experience</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">03</div>
+  </div>
+
+  <!-- ── SLIDE 4: MSC ── -->
+  <div class="slide" id="s4">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="left">
+        <div class="section-tag">The MSC</div>
+        <h2>The Modular Super Cluster</h2>
+        <div class="sub">6.5 MW Purpose-Built AI Compute Module</div>
+        <div class="spec-grid">
+          <div class="card"><div class="card-label">IT Load</div><div class="card-value teal">6.5 MW</div><div class="card-sub">Per MSC</div></div>
+          <div class="card"><div class="card-label">Dimensions</div><div class="card-value" style="font-size:18px;">277'7" × 94'10"</div></div>
+          <div class="card"><div class="card-label">Configuration</div><div class="card-value" style="font-size:18px;">4 MDC Halls</div><div class="card-sub">Per MSC</div></div>
+          <div class="card"><div class="card-label">Power</div><div class="card-value" style="font-size:16px;">4 Generators</div><div class="card-sub">+ Battery rooms</div></div>
+          <div class="card"><div class="card-label">Infrastructure</div><div class="card-value" style="font-size:16px;">MPNU A/B</div><div class="card-sub">480VAC</div></div>
+          <div class="card"><div class="card-label">Connectivity</div><div class="card-value" style="font-size:18px;">50 Gbps</div><div class="card-sub">Per MSC</div></div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="byoc-card">
+          <div class="byoc-label">Bring Your Own Compute</div>
+          <div class="byoc-ref">Reference Configuration</div>
+          <div class="byoc-gpu">NVIDIA GB200 NVL72</div>
+          <div class="byoc-nodes">512 Nodes · 4,096 GPUs</div>
+          <div class="byoc-note">Flexible BYOC model — customize compute to your workload requirements.</div>
+        </div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">04</div>
+  </div>
+
+  <!-- ── SLIDE 5: POWER & COOLING ── -->
+  <div class="slide" id="s5">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:250px;height:250px;background:rgba(0,255,200,0.07);top:50px;right:80px;"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="left">
+        <div class="section-tag">Power & Cooling</div>
+        <h2>On-Site Generation,<br>Immersion Cooling</h2>
+        <div class="sub">Industry-Leading Efficiency · Zero Grid Dependency</div>
+        <ul class="bullets">
+          <li>On-site natural gas power generation — independent of the electrical grid</li>
+          <li>N+1 redundancy across all critical power systems</li>
+          <li>Backup power capacity of 25% of total IT load ensures resilience</li>
+          <li>Immersion liquid cooling deployed across all compute infrastructure</li>
+          <li>PUE of 1.037 — among the lowest efficiency ratings in the global industry</li>
+          <li>99.9% uptime guarantee with SLA-backed commitments on all deployments</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="power-stat"><div class="val">1.037</div><div class="lbl">Power Usage Effectiveness</div></div>
+        <div class="power-stat"><div class="val">N+1</div><div class="lbl">Redundancy</div></div>
+        <div class="power-stat"><div class="val">25%</div><div class="lbl">Backup IT Load</div></div>
+        <div class="power-stat"><div class="val">99.9%</div><div class="lbl">Uptime SLA</div></div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">05</div>
+  </div>
+
+  <!-- ── SLIDE 6: CAMPUS MASTER PLAN ── -->
+  <div class="slide" id="s6">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">Campus Master Plan</div>
+      <h2>Phased Build — 13 MW to 286 MW</h2>
+      <div class="sub">Four phases from first tenants to full campus operational deployment</div>
+      <div class="timeline">
+        <div class="phase">
+          <div class="phase-badge">Phase 1 · Oct 2026</div>
+          <div class="phase-mw">13 MW <span>| 2 MSCs</span></div>
+          <div class="phase-desc">First tenants live — proving operational capability at scale</div>
+        </div>
+        <div class="phase">
+          <div class="phase-badge">Phase 2 · 2027</div>
+          <div class="phase-mw">52 MW <span>| 8 MSCs</span></div>
+          <div class="phase-desc">Campus expansion with additional on-site generation capacity</div>
+        </div>
+        <div class="phase">
+          <div class="phase-badge">Phase 3 · 2028</div>
+          <div class="phase-mw">143 MW <span>| 22 MSCs</span></div>
+          <div class="phase-desc">Mid-build milestone with a diversified and established tenant base</div>
+        </div>
+        <div class="phase highlight">
+          <div class="phase-badge">Full Build · 2029</div>
+          <div class="phase-mw">286 MW <span>| 44 MSCs</span></div>
+          <div class="phase-desc">Full campus operational — 119 acres fully deployed and active</div>
+        </div>
+      </div>
+      <div class="site-note">Site: Blindman Drive, Red Deer County · 15m FortisAlberta easement · 1.5 acres per MSC</div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">06</div>
+  </div>
+
+  <!-- ── SLIDE 7: DEPLOYMENT TIMELINE ── -->
+  <div class="slide" id="s7">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">Deployment Timeline</div>
+      <h2>20–24 Weeks from Contract to Live Compute</h2>
+      <div class="sub">Parallel workstreams compress deployment — from LOI to SLA activation</div>
+      <div class="timeline-track">
+        <div class="track-line"></div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-dot"></div>
+            <div class="step-name">LOI / Contract</div>
+            <div class="step-weeks">Week 0</div>
+            <div class="step-desc">Commercial terms finalized, site allocation confirmed</div>
+          </div>
+          <div class="step">
+            <div class="step-dot"></div>
+            <div class="step-name">Permits & Design</div>
+            <div class="step-weeks">Weeks 1–4</div>
+            <div class="step-desc">Municipal approvals, engineering, procurement initiated</div>
+          </div>
+          <div class="step">
+            <div class="step-dot"></div>
+            <div class="step-name">Manufacturing</div>
+            <div class="step-weeks">Weeks 4–12</div>
+            <div class="step-desc">MSC modules fabricated offsite, parallel infrastructure prep</div>
+          </div>
+          <div class="step">
+            <div class="step-dot"></div>
+            <div class="step-name">Site Construction</div>
+            <div class="step-weeks">Weeks 8–18</div>
+            <div class="step-desc">Foundation, utility connections, on-site assembly</div>
+          </div>
+          <div class="step">
+            <div class="step-dot"></div>
+            <div class="step-name">Commissioning</div>
+            <div class="step-weeks">Weeks 18–22</div>
+            <div class="step-desc">Power-on testing, cooling validation, network integration</div>
+          </div>
+          <div class="step">
+            <div class="step-dot" style="background:var(--teal);box-shadow:0 0 20px rgba(0,255,200,0.8);"></div>
+            <div class="step-name" style="color:white;">Go Live</div>
+            <div class="step-weeks">Weeks 22–24</div>
+            <div class="step-desc">Tenant handover, compute deployment, SLA activation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">07</div>
+  </div>
+
+  <!-- ── SLIDE 8: PRICING ── -->
+  <div class="slide" id="s8">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="left">
+        <div class="section-tag">Pricing Framework</div>
+        <h2>All-In Triple-Net Structure</h2>
+        <div class="sub">Transparent & Predictable — Everything Included</div>
+        <div class="services-list">
+          <div class="svc-item"><span class="svc-icon">✓</span>On-site power generation & distribution</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Immersion liquid cooling infrastructure</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Backup power (25% IT load capacity)</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>24/7 physical security & biometric access control</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Environmental monitoring across all MSCs</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Fire detection & suppression systems</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Facility management & maintenance</div>
+          <div class="svc-item"><span class="svc-icon">✓</span>Network connectivity (50 Gbps per MSC)</div>
+        </div>
+      </div>
+      <div class="right">
+        <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Commercial Terms</div>
+        <div class="term"><div class="term-label">Pricing Model</div><div class="term-val">All-in triple-net per MW</div></div>
+        <div class="term"><div class="term-label">Escalation</div><div class="term-val">Structured annual mechanism</div></div>
+        <div class="term"><div class="term-label">Term Flexibility</div><div class="term-val">5 to 25-year lease structures</div></div>
+        <div class="term"><div class="term-label">Minimum Unit</div><div class="term-val">6.5 MW — 1 MSC</div></div>
+        <div class="term"><div class="term-label">Scaling</div><div class="term-val">Expand in MSC increments</div></div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">08</div>
+  </div>
+
+  <!-- ── SLIDE 9: REGULATORY ── -->
+  <div class="slide" id="s9">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="left">
+        <div class="section-tag">Canadian Regulatory Advantage</div>
+        <h2>Built for Compliance,<br>Designed for Sovereignty</h2>
+        <div class="sub">Aligned with every level of Canadian data governance</div>
+        <ul class="bullets">
+          <li>PIPEDA-compliant infrastructure with full Canadian data residency guarantees</li>
+          <li>Aligned with provincial data sovereignty legislation — Alberta PIPA and Quebec Law 25</li>
+          <li>Canadian Centre for Cyber Security (CCCS) alignment for critical infrastructure protection</li>
+          <li>Positioned as Canadian critical infrastructure — eligible for federal support programs</li>
+          <li>Zero cross-border data transfer requirements — all processing stays in Canada</li>
+          <li>Supports Government of Canada cloud-first and AI strategies with sovereign compute</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="sov-badge">
+          <div class="sov-label">Data Sovereignty</div>
+          <div class="sov-num teal">100%</div>
+          <div class="sov-sub">Canadian Data Residency Guaranteed</div>
+        </div>
+        <div class="reg-chips">
+          <div class="chip"><span>PIPEDA</span> Federal Compliance</div>
+          <div class="chip"><span>Alberta PIPA</span> Provincial</div>
+          <div class="chip"><span>Quebec Law 25</span> Provincial</div>
+          <div class="chip"><span>CCCS</span> Cyber Security Aligned</div>
+        </div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">09</div>
+  </div>
+
+  <!-- ── SLIDE 10: SECURITY ── -->
+  <div class="slide" id="s10">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">Security & Compliance</div>
+      <h2>Enterprise-Grade Protection, 24/7 Operations</h2>
+      <div class="sub" style="margin-bottom:20px;">Comprehensive security framework — physical, digital, and operational</div>
+      <div class="sec-grid">
+        <div class="sec-card"><h4>Physical Security</h4><p>Perimeter fencing, CCTV, controlled access points, biometric entry, and 24/7 manned security personnel.</p></div>
+        <div class="sec-card"><h4>Environmental Monitoring</h4><p>Real-time monitoring of temperature, humidity, power quality, and airflow across all MSCs.</p></div>
+        <div class="sec-card"><h4>Fire Suppression</h4><p>Pre-action fire detection and suppression systems in all MDC halls and critical infrastructure.</p></div>
+        <div class="sec-card"><h4>Access Control</h4><p>Role-based access, visitor management, escort requirements, and full audit logging capabilities.</p></div>
+        <div class="sec-card"><h4>Compliance Pathway</h4><p>SOC 2 Type II and ISO 27001 certification pathway — designed-in from Day 1 of build.</p></div>
+        <div class="sec-card"><h4>Incident Response</h4><p>24/7 NOC with documented incident response, escalation procedures, and SLA-tied reporting.</p></div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">10</div>
+  </div>
+
+  <!-- ── SLIDE 11: TECH SPECS ── -->
+  <div class="slide" id="s11">
+    <div class="bg-grid"></div>
+    <div class="content">
+      <div class="logo"><img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon"></div>
+      <div class="section-tag">Technical Specifications</div>
+      <h2>MSC Unit — Detailed Specification Sheet</h2>
+      <div class="sub" style="margin-bottom:18px;">Complete reference for infrastructure, compute, and connectivity</div>
+      <div class="specs-grid">
+        <div class="spec-block">
+          <h4>Power</h4>
+          <div class="spec-row">IT Load per MSC <span>6.5 MW</span></div>
+          <div class="spec-row">PUE <span>1.037</span></div>
+          <div class="spec-row">Gross Power <span>~6.74 MW</span></div>
+          <div class="spec-row">Backup Power <span>25% IT Load</span></div>
+          <div class="spec-row">Redundancy <span>N+1</span></div>
+          <div class="spec-row">Full Build Total <span>286 MW</span></div>
+        </div>
+        <div class="spec-block">
+          <h4>Physical</h4>
+          <div class="spec-row">Dimensions <span>277'7" × 94'10"</span></div>
+          <div class="spec-row">Footprint per MSC <span>1.5 acres</span></div>
+          <div class="spec-row">Halls per MSC <span>4 MDC Halls</span></div>
+          <div class="spec-row">Site Acreage <span>119 acres</span></div>
+          <div class="spec-row">Zoning <span>Industrial / AI DC</span></div>
+          <div class="spec-row">Easements <span>15m FortisAlberta</span></div>
+        </div>
+        <div class="spec-block">
+          <h4>Cooling</h4>
+          <div class="spec-row">Type <span>Immersion Liquid</span></div>
+          <div class="spec-row">Capacity <span>6.5 MW IT Load</span></div>
+          <div class="spec-row">Redundancy <span>N+1 Cooling Loops</span></div>
+        </div>
+        <div class="spec-block">
+          <h4>Compute (Ref.)</h4>
+          <div class="spec-row">GPU Model <span>NVIDIA GB200 NVL72</span></div>
+          <div class="spec-row">Nodes per MSC <span>512</span></div>
+          <div class="spec-row">GPUs per MSC <span>4,096</span></div>
+          <div class="spec-row">Model <span>BYOC Flexible</span></div>
+        </div>
+        <div class="spec-block">
+          <h4>Connectivity</h4>
+          <div class="spec-row">Bandwidth <span>50 Gbps per MSC</span></div>
+          <div class="spec-row">Latency <span>Low-latency Calgary/YEG IX</span></div>
+        </div>
+        <div class="spec-block">
+          <h4>Deployment</h4>
+          <div class="spec-row">Contract to Live <span>20–24 Weeks</span></div>
+          <div class="spec-row">Phase 1 <span>Oct 2026</span></div>
+          <div class="spec-row">Full Build <span>2029</span></div>
+          <div class="spec-row">Permits <span>In Process</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="confid">Confidential · March 2026</div><div class="slide-label">11</div>
+  </div>
+
+  <!-- ── SLIDE 12: CTA ── -->
+  <div class="slide" id="s12">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:400px;height:400px;background:rgba(0,255,200,0.07);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="content">
+      <div class="logo" style="position:absolute;top:28px;right:36px;z-index:20;">
+        <img src="/images/ahi-ai-hub-of-innovation-horizontal-white.png" alt="AHI - AI Hub of Innovation" class="logo-icon">
+      </div>
+      <div class="section-tag" style="margin-bottom:14px;">Get Started</div>
+      <h2>Ready to Secure Your<br><span class="teal">Sovereign AI Infrastructure?</span></h2>
+      <div class="tagline">Let's discuss your capacity requirements and deployment timeline.</div>
+      <div class="contact-grid">
+        <div class="contact-card"><div class="clabel">Contact</div><div class="cval">Sheldon Croome<br><span style="color:var(--grey);font-size:12px;">Chief Partnerships Officer</span></div></div>
+        <div class="contact-card"><div class="clabel">Email</div><div class="cval">sheldon@havenzcorp.com</div></div>
+        <div class="contact-card"><div class="clabel">Phone</div><div class="cval">+1 (587) 983-1139</div></div>
+      </div>
+      <div class="cta-btn">Reserve Compute Capacity →</div>
+    </div>
+    <div class="confid">Confidential — Alberta Hyperscale Infrastructure — March 2026</div>
+  </div>
+
+</div>
+
+<!-- ── CONTROLS ── -->
+<div id="controls">
+  <button id="prev" title="Previous">‹</button>
+  <div class="dot-nav" id="dots"></div>
+  <span id="slide-counter">1 / 13</span>
+  <button id="next" title="Next">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('slide-counter');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    const prev = current;
+    slides[prev].classList.remove('active');
+    slides[prev].classList.add('prev');
+    setTimeout(() => slides[prev].classList.remove('prev'), 500);
+
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    counter.textContent = `${current + 1} / ${total}`;
+  }
+
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+</script>
+
+<script>
+// Animated Background Canvas - matches website exactly
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // Set canvas size
+  const setCanvasSize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  setCanvasSize();
+  window.addEventListener('resize', setCanvasSize);
+
+  // Particles representing data packets
+  const particles = [];
+
+  // Create particles
+  for (let i = 0; i < 40; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: Math.random() * 2 + 1,
+      opacity: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  // Animation loop
+  let animationId;
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw grid (subtle)
+    ctx.strokeStyle = 'rgba(0, 255, 200, 0.03)';
+    ctx.lineWidth = 1;
+    const gridSize = 50;
+
+    for (let x = 0; x < canvas.width; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+
+    for (let y = 0; y < canvas.height; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+
+    // Update and draw particles
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Wrap around edges
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      // Draw particle with glow
+      const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
+      gradient.addColorStop(0, `rgba(0, 255, 200, ${p.opacity})`);
+      gradient.addColorStop(1, 'rgba(0, 255, 200, 0)');
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Draw connections between nearby particles
+    ctx.strokeStyle = 'rgba(0, 255, 200, 0.1)';
+    ctx.lineWidth = 0.5;
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 150) {
+          const opacity = (1 - distance / 150) * 0.15;
+          ctx.strokeStyle = `rgba(0, 255, 200, ${opacity})`;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    animationId = requestAnimationFrame(animate);
+  };
+
+  animate();
+})();
+</script>
+</body>
+</html>

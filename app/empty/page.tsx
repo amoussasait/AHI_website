@@ -1,30 +1,28 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Navigation from "@/components/navigation"
-import Footer from "@/components/footer"
-import DatacenterBackground from "@/components/datacenter-background"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function EmptyPage() {
-  const [scrolled, setScrolled] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    // Redirect to the static HTML presentation with cache buster
+    window.location.href = `/presentation.html?v=${Date.now()}`
   }, [])
 
   return (
-    <main className="w-full min-h-screen overflow-hidden bg-gradient-to-b from-secondary via-background to-background">
-      <DatacenterBackground />
-      <Navigation scrolled={scrolled} />
-
-      {/* Empty content area */}
-      <div className="min-h-screen" />
-
-      <Footer />
-    </main>
+    <div style={{
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "#141414",
+      color: "#00ffc8",
+      fontFamily: "monospace"
+    }}>
+      <div>Loading presentation...</div>
+    </div>
   )
 }

@@ -60,7 +60,7 @@ export default function Hero() {
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center justify-center gap-3 px-4 sm:px-6 lg:px-8 py-5 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center"
+                className="flex flex-col items-center justify-start gap-3 px-3 sm:px-4 lg:px-6 py-4 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center h-full min-h-[140px]"
               >
                 <div className="w-11 h-11 rounded-full bg-primary/15 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-primary" />
@@ -69,29 +69,30 @@ export default function Hero() {
               </div>
             ))}
           </div>
-          <p className="text-base sm:text-lg text-muted-foreground mt-6 italic">
-            {"Canada's Sovereign, AI-Ready Infrastructure Platform — Built for Hyperscale."}
-          </p>
         </motion.div>
 
-        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 px-4" variants={itemVariants}>
+        <motion.p className="text-base sm:text-lg text-muted-foreground italic whitespace-nowrap text-center w-full" variants={itemVariants}>
+          {"Up to 300MW Battery Storage | 50MW Solar Generation | 44 Data Centre Halls | 180,000+ GPU Capacity"}
+        </motion.p>
+
+        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 px-4 mt-8" variants={itemVariants}>
           <Link href="/contact" className="w-full sm:w-auto">
             <motion.button
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
+              className="w-full sm:w-auto px-8 sm:px-10 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-base sm:text-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(0, 255, 200, 0.4)" }}
               whileTap={{ scale: 0.95 }}
             >
               Book a Tour
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-5 h-5" />
             </motion.button>
           </Link>
           <Link href="/compute" className="w-full sm:w-auto">
             <motion.button
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full border border-primary/50 text-primary font-semibold hover:border-primary hover:bg-primary/5 transition-colors"
+              className="w-full sm:w-auto px-8 sm:px-10 py-4 rounded-full border border-primary/50 text-primary font-semibold text-base sm:text-lg hover:border-primary hover:bg-primary/5 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Request Pricing
+              Reserve AI Capacity
             </motion.button>
           </Link>
         </motion.div>

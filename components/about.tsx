@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { Zap, Building2, Gauge, Layers, Droplets, Network, BatteryFull, ArrowLeftRight, Droplet, Shield } from "lucide-react"
+import { Zap, Building2, Gauge, Layers, Droplets, Network, BatteryFull, ArrowLeftRight, Droplet, Shield, Server } from "lucide-react"
 import Image from "next/image"
 
 export default function About() {
@@ -28,23 +28,23 @@ export default function About() {
       headline: "250MW+ Prime Power",
       description:
         "On-site generation with grid-connected import/export capability. Up to 300MW battery storage, 50MW solar integration, and dedicated backup systems engineered for mission-critical AI operations.",
-      footer: "Structured expansion pathway to 1GW.",
+      footer: "Structured expansion pathway to 1GW. Designed to support large-scale hyperscale deployments and high-density AI clusters.",
     },
     {
       icon: Building2,
       title: "AI CAMPUS",
       headline: "Up to 44 Data Halls",
       description:
-        "Modular 6–8MW deployments or fully customized hyperscale builds.",
+        "Modular 6–8MW deployments or design-build infrastructure tailored to hyperscaler specifications and enterprise AI requirements.",
       footer:
-        "Flexible campus architecture aligned to enterprise AI, sovereign workloads, and global hyperscale requirements.",
+        "Flexible campus architecture supporting custom power densities, cooling technologies, and compute platforms.",
     },
     {
       icon: Droplets,
       title: "COOLING ARCHITECTURE",
       headline: "Immersion | Liquid-to-Chip",
       description:
-        "High-density cooling platforms supporting full immersion and direct liquid-to-chip configurations — built for next-generation GPU clusters and extreme-density AI workloads.",
+        "Cooling infrastructure designed to support immersion, direct-to-chip, or hyperscaler-specified cooling architectures — built for next-generation GPU clusters and extreme-density AI workloads.",
       footer:
         "Engineered to meet the highest performance requirements of modern data centres.",
     },
@@ -62,17 +62,25 @@ export default function About() {
       title: "DEPLOYMENT FLEXIBILITY",
       headline: "Cloud | BYOC | Hyperscale",
       description:
-        "Managed GPU cloud services, Bring Your Own Compute environments, secure sovereign deployments, and full-campus hyperscale infrastructure.",
+        "Flexible deployment models supporting managed GPU cloud services, Bring Your Own Compute (BYOC), or dedicated hyperscale infrastructure built to tenant specifications.",
       footer:
-        "Designed to scale with demand and long-term infrastructure commitments.",
+        "Vendor-agnostic architecture supporting NVIDIA, AMD, custom accelerators, and next-generation AI hardware platforms.",
     },
     {
       icon: Network,
       title: "NETWORK INFRASTRUCTURE",
       headline: "Diverse Fiber | 400G+",
       description:
-        "Carrier-neutral network architecture leveraging multiple upstream providers, DWDM backbone scalability to 400G and 800G+, and protected dual-path configurations delivering up to 99.99% availability with sub-15ms regional latency.",
-      footer: "DWDM — Dense Wavelength Division Multiplexing.",
+        "Carrier-neutral fiber architecture with multiple upstream providers, DWDM backbone scalability to 400G and 800G+, and protected dual-path connectivity.",
+      footer: "Designed to support low-latency AI workloads and hyperscale interconnect requirements.",
+    },
+    {
+      icon: Server,
+      title: "HYPERSCALE INFRASTRUCTURE",
+      headline: "50MW+ Dedicated Deployments",
+      description:
+        "Designed to support 50MW+ dedicated deployments for hyperscale AI operators, sovereign compute environments, and enterprise AI workloads. The campus supports custom design-build infrastructure tailored to tenant specifications.",
+      footer: "Vendor-agnostic architecture capable of meeting diverse compute, cooling, and network requirements — powered by a vertically integrated energy platform.",
     },
   ]
 
@@ -165,7 +173,7 @@ export default function About() {
                   const items = [
                     { icon: Zap,           stat: "250MW+",    label: "250MW+ On-Site Prime Power" },
                     { icon: BatteryFull,   stat: "300MW",     label: "300MW Battery Storage" },
-                    { icon: ArrowLeftRight,stat: "150MW",     label: "150MW Grid Import / Export" },
+                    { icon: ArrowLeftRight,stat: "150MW",     label: "150MW Grid Export with Import Capabilities" },
                     { icon: Droplets,      stat: "Cooling",   label: "Immersion & Liquid-to-Chip Cooling" },
                     { icon: Network,       stat: "400G+",     label: "Dual-Path Fiber | 400G+ Scalable" },
                     { icon: Gauge,         stat: "1.04",      label: "PUE 1.04 Performance" },
@@ -194,7 +202,7 @@ export default function About() {
               {/* Right: architecture diagram */}
               <div className="flex-1 overflow-hidden">
                 <Image
-                  src="/images/ai-compute-architecture.png"
+                  src="/images/ahi-ecosystem-architecture.png"
                   alt="AHI Ecosystem Architecture"
                   width={800}
                   height={980}

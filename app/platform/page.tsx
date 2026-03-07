@@ -69,7 +69,7 @@ export default function PlatformPage() {
               Land. Entitlements. Prime Power Generation. Grid Interconnection. Modular AI Infrastructure. Delivered as a single, vertically integrated platform.
             </p>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-6">
               <Link href="/contact">
                 <motion.button
                   className="px-8 py-3 rounded-full bg-primary text-background font-bold hover:bg-primary/90 transition-colors"
@@ -893,6 +893,48 @@ export default function PlatformPage() {
           </motion.div>
         </div>
       </section>
+
+      <SectionDividerAnimated />
+
+      {/* INTERACTIVE SITE PLAN SECTION */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+              <span className="text-white">Interactive </span>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Site Plan
+              </span>
+            </h2>
+            <p className="text-lg text-accent max-w-3xl mx-auto mb-8">
+              Explore the AHI Data Centre campus with our interactive site plan. Zoom, pan, and navigate through different zones to understand the full scope of our infrastructure.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="rounded-xl overflow-hidden border border-primary/20 bg-black/40"
+            style={{ height: "80vh", minHeight: "600px" }}
+          >
+            <iframe
+              src="/interactive-site-plan.html"
+              className="w-full h-full"
+              style={{ border: "none" }}
+              title="Interactive Site Plan"
+            />
+          </motion.div>
+        </div>
+      </section>
+
       <Footer />
     </main>
   )

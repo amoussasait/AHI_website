@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interactive Site Plan</title>
+  <style>
+    :root{
+      --bg:#0b0e14;
+      --panel:#0f1523;
+      --panel2:#0c111d;
+      --text:#e7eefc;
+      --muted:rgba(231,238,252,.7);
+      --line:rgba(231,238,252,.14);
+      --accent:#00ffc8;
+      --accent2:#7c5cff;
+      --ok:#5fe38c;
+      --warn:#ffd36e;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --r16:16px;
+      --r12:12px;
+      --r10:10px;
+      --r8:8px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      background:radial-gradient(1200px 800px at 30% 10%, rgba(0,255,200,.12), transparent 55%),
+                 radial-gradient(900px 600px at 80% 20%, rgba(124,92,255,.10), transparent 55%),
+                 #141414;
+      color:var(--text);
+    }
+    .app{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      grid-template-rows: auto 1fr;
+      gap:12px;
+      height:100vh;
+      padding:12px;
+    }
+    .topbar{
+      grid-column:1 / -1;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:var(--r16);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .brand .title{ font-weight:800; letter-spacing:.2px; }
+    .brand .sub{ font-size:12px; color:var(--muted); }
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:650;
+      font-size:13px;
+      user-select:none;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .btn:hover{ background:rgba(255,255,255,.07); border-color:rgba(231,238,252,.22); transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+    .btn.primary{
+      border-color: rgba(0,255,200,.45);
+      background: rgba(0,255,200,.14);
+    }
+    .btn.good{
+      border-color: rgba(95,227,140,.45);
+      background: rgba(95,227,140,.12);
+    }
+    .btn.warn{
+      border-color: rgba(255,211,110,.45);
+      background: rgba(255,211,110,.12);
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+    }
+    .chip strong{ color:var(--text); }
+    .input{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      padding:9px 10px;
+      border-radius:12px;
+      min-width:220px;
+      outline:none;
+      font-size:13px;
+    }
+    .input::placeholder{ color:rgba(231,238,252,.5); }
+
+    .viewport{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--r16);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      touch-action:none;
+    }
+
+    .scene{
+      position:absolute;
+      inset:0;
+      transform-origin:0 0;
+      will-change: transform;
+    }
+
+    .plan-image{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      user-select:none;
+      pointer-events:none;
+      filter: contrast(1.02);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+    }
+
+    .hotspot{
+      fill: rgba(0,255,200, .10);
+      stroke: rgba(0,255,200, .70);
+      stroke-width: 2;
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 130ms ease, fill 130ms ease, stroke 130ms ease, stroke-width 130ms ease;
+      vector-effect: non-scaling-stroke;
+    }
+    .hotspot:hover,
+    .hotspot.is-hover{
+      opacity:1;
+      fill: rgba(0,255,200, .14);
+      stroke: rgba(0,255,200, .95);
+      stroke-width: 2.2;
+    }
+    .hotspot.is-active{
+      opacity:1;
+      fill: rgba(124,92,255, .16);
+      stroke: rgba(124,92,255, .95);
+      stroke-width: 2.6;
+    }
+    .hotspot.is-selected{
+      opacity:1;
+      fill: rgba(95,227,140, .16);
+      stroke: rgba(95,227,140, .95);
+      stroke-width: 2.6;
+    }
+
+    .tooltip{
+      position:absolute;
+      left:0; top:0;
+      transform: translate(12px, 12px);
+      padding:8px 10px;
+      border-radius:12px;
+      background: rgba(0,0,0,.82);
+      border:1px solid rgba(255,255,255,.12);
+      color: #fff;
+      font-size: 12px;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity 120ms ease;
+      max-width: 280px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+      line-height:1.25;
+    }
+    .tooltip.visible{ opacity:1; }
+    .tooltip .t-title{ font-weight:800; margin-bottom:2px; }
+    .tooltip .t-sub{ opacity:.85; }
+
+    .panel{
+      border-radius:var(--r16);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 0;
+    }
+    .panel-head{
+      padding:12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      background:rgba(0,0,0,.12);
+    }
+    .panel-head .hgroup{
+      display:flex; flex-direction:column; gap:4px;
+      min-width:0;
+    }
+    .panel-title{ font-weight:900; letter-spacing:.2px; }
+    .panel-sub{ font-size:12px; color:var(--muted); }
+    .panel-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .panel-body{
+      padding:12px;
+      overflow:auto;
+      min-height:0;
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:8px 10px;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.14);
+      margin-bottom:10px;
+    }
+    .k{ color:var(--muted); font-size:12px; }
+    .v{ font-size:13px; }
+    .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .tag{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      padding:6px 8px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .divider{ height:1px; background:var(--line); margin:12px 0; }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.12);
+    }
+    .row .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .row .name{ font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .row .meta{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .row .right{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .mini-help{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    @media (max-width: 980px){
+      .app{ grid-template-columns: 1fr; grid-template-rows:auto 1fr auto; }
+      .panel{ height: 320px; }
+      .input{ min-width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="title">Interactive Site Plan - AHI Data Centre</div>
+      <div class="sub">Mode 1: Explore • Mode 2: Guided Tour • Mode 3: Select Zones</div>
+    </div>
+
+    <div class="toolbar">
+      <span class="chip"><strong>Mode</strong> <span id="modeLabel">Explore</span></span>
+
+      <button class="btn" id="modeExplore">Explore</button>
+      <button class="btn primary" id="modeTour">Tour</button>
+      <button class="btn good" id="modeSelect">Select</button>
+
+      <input class="input" id="search" placeholder="Search zones..." />
+
+      <button class="btn" id="zoomIn">+</button>
+      <button class="btn" id="zoomOut">−</button>
+      <button class="btn" id="reset">Reset</button>
+      <button class="btn warn" id="toggleTilt">3D Tilt: Off</button>
+    </div>
+  </div>
+
+  <div class="viewport" id="viewport" aria-label="Interactive plan viewport">
+    <div class="scene" id="scene">
+      <img
+        class="plan-image"
+        id="planImage"
+        src="/images/ahi_DCc.svg"
+        alt="AHI Data Centre Site plan"
+        draggable="false"
+      />
+
+      <svg class="overlay" id="overlay" viewBox="0 0 1760 2410" preserveAspectRatio="none">
+        <!-- EXAMPLE HOTSPOTS - Update these with actual zone coordinates from your site plan -->
+        <polygon class="hotspot" data-id="west" points="100,200 800,200 800,600 100,600"></polygon>
+        <polygon class="hotspot" data-id="main" points="900,200 1660,200 1660,600 900,600"></polygon>
+        <polygon class="hotspot" data-id="east" points="100,700 800,700 800,1100 100,1100"></polygon>
+        <polygon class="hotspot" data-id="expansion" points="900,700 1660,700 1660,1100 900,1100"></polygon>
+        <polygon class="hotspot" data-id="south" points="100,1200 800,1200 800,1600 100,1600"></polygon>
+        <polygon class="hotspot" data-id="pond" points="900,1200 1660,1200 1660,1600 900,1600"></polygon>
+      </svg>
+
+      <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true">
+        <div class="t-title" id="ttTitle">Title</div>
+        <div class="t-sub" id="ttSub">Subtitle</div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="panel" id="panel" aria-live="polite">
+    <div class="panel-head">
+      <div class="hgroup">
+        <div class="panel-title" id="panelTitle">Hover or click a zone</div>
+        <div class="panel-sub" id="panelSub">Tip: drag to pan • wheel/pinch to zoom • click zones for details</div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn" id="clearActive">Clear</button>
+        <button class="btn good" id="exportSelection">Export Selection</button>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="kv">
+        <div class="k">Current mode</div>
+        <div class="v" id="modeDesc">Explore: hover for tooltip, click for details.</div>
+
+        <div class="k">Selected zones</div>
+        <div class="v" id="selectedCount">0</div>
+
+        <div class="k">Zoom</div>
+        <div class="v" id="zoomLabel">100%</div>
+      </div>
+
+      <div class="mini-help" id="tourHelp">
+        <strong>Tour mode</strong> pans/zooms to each zone step-by-step.
+        Click <em>Start Tour</em> below to begin.
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="list" id="zoneList"></div>
+
+      <div class="divider"></div>
+
+      <div class="mini-help">
+        Interactive site plan for the AHI Data Centre campus.
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const ZONES = {
+  west: {
+    name: "West Campus Data Centres",
+    desc: "West cluster of data centre buildings and support areas.",
+    tags: ["Data Centres", "Campus"],
+    tourHint: "West Campus overview and primary blocks."
+  },
+  main: {
+    name: "Main Campus Data Centres",
+    desc: "Main campus data centres and internal circulation.",
+    tags: ["Data Centres", "Campus"],
+    tourHint: "Main Campus is the central hub."
+  },
+  east: {
+    name: "East Campus Data Centres",
+    desc: "East campus buildings and adjacent access.",
+    tags: ["Data Centres", "Campus"],
+    tourHint: "East Campus current build-out."
+  },
+  expansion: {
+    name: "East Campus Expansion",
+    desc: "Future expansion area for additional phases.",
+    tags: ["Expansion", "Future"],
+    tourHint: "Planned expansion zone."
+  },
+  south: {
+    name: "South Campus Data Centres",
+    desc: "Southern cluster; useful for segmented operations.",
+    tags: ["Data Centres", "Campus"],
+    tourHint: "South Campus cluster."
+  },
+  pond: {
+    name: "Water Storage Pond Area",
+    desc: "Water storage pond and related infrastructure.",
+    tags: ["Utilities", "Water"],
+    tourHint: "Utility/water area."
+  }
+};
+
+const tourOrder = ["west", "main", "east", "expansion", "south", "pond"];
+
+const viewport = document.getElementById("viewport");
+const scene = document.getElementById("scene");
+const overlay = document.getElementById("overlay");
+
+const tooltip = document.getElementById("tooltip");
+const ttTitle = document.getElementById("ttTitle");
+const ttSub = document.getElementById("ttSub");
+
+const modeLabel = document.getElementById("modeLabel");
+const modeDesc = document.getElementById("modeDesc");
+const panelTitle = document.getElementById("panelTitle");
+const panelSub = document.getElementById("panelSub");
+const zoneList = document.getElementById("zoneList");
+const selectedCount = document.getElementById("selectedCount");
+const zoomLabel = document.getElementById("zoomLabel");
+const tourHelp = document.getElementById("tourHelp");
+
+let scale = 1;
+let tx = 0, ty = 0;
+
+function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+function applyTransform(){
+  const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  scene.style.transform = t;
+  zoomLabel.textContent = Math.round(scale * 100) + "%";
+}
+
+function resetView(){
+  scale = 1;
+  tx = 0;
+  ty = 0;
+  applyTransform();
+}
+
+function zoomAt(mx, my, nextScale){
+  const prev = scale;
+  scale = clamp(nextScale, 0.75, 7);
+
+  tx = mx - (mx - tx) * (scale / prev);
+  ty = my - (my - ty) * (scale / prev);
+
+  applyTransform();
+}
+
+let isPanning = false;
+let startX=0, startY=0, startTx=0, startTy=0;
+
+viewport.addEventListener("pointerdown", (e) => {
+  if (e.target.classList && e.target.classList.contains("hotspot")) return;
+
+  isPanning = true;
+  viewport.setPointerCapture(e.pointerId);
+  startX = e.clientX;
+  startY = e.clientY;
+  startTx = tx;
+  startTy = ty;
+});
+
+viewport.addEventListener("pointermove", (e) => {
+  if (!isPanning) return;
+  tx = startTx + (e.clientX - startX);
+  ty = startTy + (e.clientY - startY);
+  applyTransform();
+});
+
+viewport.addEventListener("pointerup", () => isPanning = false);
+viewport.addEventListener("pointercancel", () => isPanning = false);
+
+viewport.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const rect = viewport.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const factor = (e.deltaY < 0) ? 1.10 : 0.90;
+  zoomAt(mx, my, scale * factor);
+}, { passive:false });
+
+document.getElementById("zoomIn").addEventListener("click", () => zoomAt(viewport.clientWidth/2, viewport.clientHeight/2, scale * 1.18));
+document.getElementById("zoomOut").addEventListener("click", () => zoomAt(viewport.clientWidth/2, viewport.clientHeight/2, scale / 1.18));
+document.getElementById("reset").addEventListener("click", () => { resetView(); clearFocus(); });
+
+const MODES = { EXPLORE:"explore", TOUR:"tour", SELECT:"select" };
+let mode = MODES.EXPLORE;
+
+function setMode(next){
+  mode = next;
+  modeLabel.textContent = (mode === MODES.EXPLORE) ? "Explore" : (mode === MODES.TOUR ? "Tour" : "Select");
+  tourHelp.style.display = (mode === MODES.TOUR) ? "block" : "none";
+
+  if (mode === MODES.EXPLORE){
+    modeDesc.textContent = "Explore: hover for tooltip, click for details.";
+    panelSub.textContent = "Tip: drag to pan • wheel/pinch to zoom • click zones for details";
+    stopTour();
+  }
+  if (mode === MODES.TOUR){
+    modeDesc.textContent = "Tour: start the guided tour; it will focus each zone.";
+    panelSub.textContent = "Use Start/Next/Prev to navigate the tour steps.";
+  }
+  if (mode === MODES.SELECT){
+    modeDesc.textContent = "Select: click zones to toggle selection (for quoting/ops/export).";
+    panelSub.textContent = "Click zones to select/deselect. Export selection as JSON.";
+    stopTour();
+  }
+  renderZoneList();
+}
+
+document.getElementById("modeExplore").addEventListener("click", () => setMode(MODES.EXPLORE));
+document.getElementById("modeTour").addEventListener("click", () => setMode(MODES.TOUR));
+document.getElementById("modeSelect").addEventListener("click", () => setMode(MODES.SELECT));
+
+let activeId = null;
+const selected = new Set();
+
+function clearHover(){
+  overlay.querySelectorAll(".hotspot").forEach(el => el.classList.remove("is-hover"));
+}
+function clearActive(){
+  overlay.querySelectorAll(".hotspot").forEach(el => el.classList.remove("is-active"));
+  activeId = null;
+}
+function clearSelection(){
+  overlay.querySelectorAll(".hotspot").forEach(el => el.classList.remove("is-selected"));
+  selected.clear();
+  updateSelectedUI();
+}
+function clearFocus(){
+  hideTooltip();
+  clearHover();
+  clearActive();
+  panelTitle.textContent = "Hover or click a zone";
+  zoneDetails(null);
+}
+
+function hideTooltip(){
+  tooltip.classList.remove("visible");
+  tooltip.setAttribute("aria-hidden","true");
+}
+function showTooltip(x, y, zone){
+  ttTitle.textContent = zone.name;
+  ttSub.textContent = zone.tourHint || zone.desc || "";
+  tooltip.style.left = x + "px";
+  tooltip.style.top = y + "px";
+  tooltip.classList.add("visible");
+  tooltip.setAttribute("aria-hidden","false");
+}
+
+function zoneDetails(id){
+  const zone = id ? ZONES[id] : null;
+  if (!zone){
+    renderZoneList();
+    return;
+  }
+  panelTitle.textContent = zone.name;
+  renderZoneList(id);
+}
+
+function updateSelectedUI(){
+  selectedCount.textContent = selected.size.toString();
+}
+
+function setHotspotState(){
+  overlay.querySelectorAll(".hotspot").forEach(el => {
+    const id = el.dataset.id;
+    el.classList.toggle("is-selected", selected.has(id));
+    el.classList.toggle("is-active", id === activeId);
+  });
+  updateSelectedUI();
+}
+
+overlay.addEventListener("mousemove", (e) => {
+  const el = e.target;
+  if (!el.classList.contains("hotspot")) return;
+
+  const id = el.dataset.id;
+  const zone = ZONES[id];
+  if (!zone) return;
+
+  clearHover();
+  el.classList.add("is-hover");
+
+  const rect = viewport.getBoundingClientRect();
+  showTooltip(e.clientX - rect.left, e.clientY - rect.top, zone);
+});
+
+overlay.addEventListener("mouseleave", () => {
+  clearHover();
+  hideTooltip();
+});
+
+overlay.addEventListener("click", (e) => {
+  const el = e.target;
+  if (!el.classList.contains("hotspot")) return;
+
+  const id = el.dataset.id;
+  if (!ZONES[id]) return;
+
+  if (mode === MODES.SELECT){
+    if (selected.has(id)) selected.delete(id);
+    else selected.add(id);
+
+    activeId = id;
+    setHotspotState();
+    zoneDetails(id);
+    return;
+  }
+
+  activeId = id;
+  setHotspotState();
+  zoneDetails(id);
+
+  focusZone(id, { padding: 0.12, maxScale: 3.2, animate: true });
+});
+
+document.getElementById("search").addEventListener("input", (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  if (!q){
+    clearActive();
+    setHotspotState();
+    panelTitle.textContent = "Hover or click a zone";
+    renderZoneList();
+    return;
+  }
+
+  const id = Object.keys(ZONES).find(k => ZONES[k].name.toLowerCase().includes(q));
+  if (!id) return;
+
+  activeId = id;
+  setHotspotState();
+  zoneDetails(id);
+  focusZone(id, { padding: 0.16, maxScale: 3.5, animate: true });
+});
+
+function getPolyBBox(polyEl){
+  const pts = polyEl.points;
+  let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+  for (let i=0; i<pts.numberOfItems; i++){
+    const p = pts.getItem(i);
+    minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);
+  }
+  return { minX, minY, maxX, maxY, w:maxX-minX, h:maxY-minY, cx:(minX+maxX)/2, cy:(minY+maxY)/2 };
+}
+
+function focusZone(id, { padding=0.15, maxScale=4, animate=true } = {}){
+  const el = overlay.querySelector(`.hotspot[data-id="${id}"]`);
+  if (!el) return;
+
+  const bbox = getPolyBBox(el);
+
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+
+  const padW = bbox.w * padding;
+  const padH = bbox.h * padding;
+
+  const targetW = bbox.w + padW*2;
+  const targetH = bbox.h + padH*2;
+
+  const vb = overlay.viewBox.baseVal;
+  const vbW = vb.width, vbH = vb.height;
+
+  const scaleX = vw / (targetW * (vw / vbW));
+  const scaleY = vh / (targetH * (vh / vbH));
+  let targetScale = Math.min(scaleX, scaleY);
+  targetScale = clamp(targetScale, 1.2, maxScale);
+
+  const cxPx = (bbox.cx / vbW) * vw;
+  const cyPx = (bbox.cy / vbH) * vh;
+
+  const targetTx = (vw/2) - cxPx * targetScale;
+  const targetTy = (vh/2) - cyPx * targetScale;
+
+  if (!animate){
+    scale = targetScale; tx = targetTx; ty = targetTy;
+    applyTransform();
+    return;
+  }
+
+  animateTo({ scale: targetScale, tx: targetTx, ty: targetTy }, 420);
+}
+
+function animateTo({ scale: s2, tx: x2, ty: y2 }, ms=380){
+  const s1 = scale, x1 = tx, y1 = ty;
+  const t0 = performance.now();
+  const ease = (t)=> t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+
+  function frame(now){
+    const t = clamp((now - t0)/ms, 0, 1);
+    const e = ease(t);
+    scale = s1 + (s2 - s1) * e;
+    tx = x1 + (x2 - x1) * e;
+    ty = y1 + (y2 - y1) * e;
+    applyTransform();
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+let tourIndex = 0;
+let tourRunning = false;
+
+function startTour(){
+  if (tourOrder.length === 0) return;
+  tourRunning = true;
+  tourIndex = 0;
+  goTourStep(tourIndex);
+}
+function stopTour(){
+  tourRunning = false;
+}
+function nextTour(){
+  if (!tourRunning) startTour();
+  else goTourStep(Math.min(tourIndex + 1, tourOrder.length - 1));
+}
+function prevTour(){
+  if (!tourRunning) startTour();
+  else goTourStep(Math.max(tourIndex - 1, 0));
+}
+function goTourStep(i){
+  tourRunning = true;
+  tourIndex = i;
+  const id = tourOrder[tourIndex];
+  if (!id) return;
+
+  activeId = id;
+  setHotspotState();
+  zoneDetails(id);
+  focusZone(id, { padding: 0.20, maxScale: 3.8, animate:true });
+
+  const z = ZONES[id];
+  tourHelp.innerHTML = `
+    <strong>Tour step ${tourIndex+1}/${tourOrder.length}:</strong> ${z?.name || id}<br/>
+    <span style="color:rgba(231,238,252,.72)">${z?.tourHint || z?.desc || ""}</span><br/><br/>
+    <button class="btn primary" id="tourPrev">Prev</button>
+    <button class="btn primary" id="tourNext">Next</button>
+    <button class="btn" id="tourStop">Stop Tour</button>
+  `;
+
+  document.getElementById("tourPrev").onclick = prevTour;
+  document.getElementById("tourNext").onclick = nextTour;
+  document.getElementById("tourStop").onclick = () => { stopTour(); setMode(MODES.EXPLORE); };
+}
+
+function renderZoneList(focusId=null){
+  zoneList.innerHTML = "";
+
+  const ids = Object.keys(ZONES);
+  ids.forEach(id => {
+    const z = ZONES[id];
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const left = document.createElement("div");
+    left.className = "left";
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = z.name;
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = z.desc;
+
+    left.appendChild(name);
+    left.appendChild(meta);
+
+    const right = document.createElement("div");
+    right.className = "right";
+
+    const btnFocus = document.createElement("button");
+    btnFocus.className = "btn";
+    btnFocus.textContent = "Focus";
+    btnFocus.onclick = () => {
+      activeId = id;
+      setHotspotState();
+      zoneDetails(id);
+      focusZone(id, { padding: 0.16, maxScale: 3.8, animate:true });
+    };
+
+    const btnSelect = document.createElement("button");
+    btnSelect.className = "btn good";
+    btnSelect.textContent = selected.has(id) ? "Selected" : "Select";
+    btnSelect.onclick = () => {
+      if (selected.has(id)) selected.delete(id);
+      else selected.add(id);
+      setHotspotState();
+      renderZoneList(focusId || id);
+    };
+
+    const btnTour = document.createElement("button");
+    btnTour.className = "btn primary";
+    btnTour.textContent = "Tour";
+    btnTour.onclick = () => {
+      setMode(MODES.TOUR);
+      const idx = tourOrder.indexOf(id);
+      goTourStep(idx >= 0 ? idx : 0);
+    };
+
+    right.appendChild(btnFocus);
+    right.appendChild(btnSelect);
+    right.appendChild(btnTour);
+
+    row.appendChild(left);
+    row.appendChild(right);
+
+    if (focusId === id){
+      row.style.borderColor = "rgba(124,92,255,.45)";
+      row.style.background = "rgba(124,92,255,.10)";
+    }
+
+    zoneList.appendChild(row);
+
+    if (focusId === id){
+      const details = document.createElement("div");
+      details.className = "kv";
+      details.innerHTML = `
+        <div class="k">Description</div><div class="v">${escapeHtml(z.desc || "")}</div>
+        <div class="k">Tags</div>
+        <div class="v">
+          <div class="tags">
+            ${(z.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+          </div>
+        </div>
+      `;
+      zoneList.appendChild(details);
+    }
+  });
+
+  if (mode === MODES.TOUR){
+    const tourRow = document.createElement("div");
+    tourRow.className = "row";
+    tourRow.innerHTML = `
+      <div class="left">
+        <div class="name">Guided Tour Controls</div>
+        <div class="meta">Start/Next/Prev through the predefined tour order.</div>
+      </div>
+      <div class="right">
+        <button class="btn primary" id="tourStartBtn">Start Tour</button>
+        <button class="btn primary" id="tourPrevBtn">Prev</button>
+        <button class="btn primary" id="tourNextBtn">Next</button>
+      </div>
+    `;
+    zoneList.prepend(tourRow);
+    document.getElementById("tourStartBtn").onclick = startTour;
+    document.getElementById("tourPrevBtn").onclick = prevTour;
+    document.getElementById("tourNextBtn").onclick = nextTour;
+  }
+}
+
+function escapeHtml(s){
+  return (s || "").replace(/[&<>"']/g, (c) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+document.getElementById("exportSelection").addEventListener("click", async () => {
+  const out = Array.from(selected).map(id => ({ id, ...ZONES[id] }));
+  const json = JSON.stringify({ selected: out }, null, 2);
+
+  try{
+    await navigator.clipboard.writeText(json);
+    panelTitle.textContent = "Selection exported to clipboard ✅";
+    panelSub.textContent = "Paste it wherever you need (CRM, config, CMS, etc.)";
+  }catch{
+    alert(json);
+  }
+});
+
+document.getElementById("clearActive").addEventListener("click", () => {
+  clearActive();
+  setHotspotState();
+  hideTooltip();
+  panelTitle.textContent = "Hover or click a zone";
+  renderZoneList();
+});
+
+let tiltOn = false;
+const tiltBtn = document.getElementById("toggleTilt");
+
+tiltBtn.addEventListener("click", () => {
+  tiltOn = !tiltOn;
+  tiltBtn.textContent = "3D Tilt: " + (tiltOn ? "On" : "Off");
+  if (!tiltOn){
+    scene.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+});
+
+viewport.addEventListener("pointermove", (e) => {
+  if (!tiltOn) return;
+  const rect = viewport.getBoundingClientRect();
+  const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+
+  const rotY = nx * 3.5;
+  const rotX = -ny * 3.0;
+
+  scene.style.transform = `translate(${tx}px, ${ty}px) scale(${scale}) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+});
+viewport.addEventListener("pointerleave", () => {
+  if (!tiltOn) return;
+  scene.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+});
+
+setMode(MODES.EXPLORE);
+setHotspotState();
+applyTransform();
+renderZoneList();
+updateSelectedUI();
+</script>
+
+</body>
+</html>

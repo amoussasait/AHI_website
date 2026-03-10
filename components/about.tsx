@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { Zap, Building2, Gauge, Layers, Droplets, Network, BatteryFull, ArrowLeftRight, Droplet, Shield, Server } from "lucide-react"
+import { Zap, Building2, Gauge, Layers, Droplets, Network, BatteryFull, ArrowLeftRight, Droplet, Shield, Server, Wrench, Cpu } from "lucide-react"
 import Image from "next/image"
 
 export default function About() {
@@ -31,6 +31,14 @@ export default function About() {
       footer: "Structured expansion pathway to 1GW. Designed to support large-scale hyperscale deployments and high-density AI clusters.",
     },
     {
+      icon: Wrench,
+      title: "DESIGN-BUILD AI INFRASTRUCTURE",
+      headline: "Custom Infrastructure | Design-Build",
+      description:
+        "Custom AI infrastructure delivered through a design-build deployment model, enabling hyperscalers, enterprise operators, and sovereign compute partners to deploy infrastructure tailored to their exact requirements. The campus supports modular data centre halls, custom power architecture, and advanced cooling environments, allowing customers to deploy purpose-built AI clusters without legacy infrastructure constraints.",
+      footer: "Flexible development structures are also available, including long-term land lease arrangements to support third-party builders and independent infrastructure deployment.",
+    },
+    {
       icon: Building2,
       title: "AI CAMPUS",
       headline: "Up to 44 Data Halls",
@@ -40,22 +48,12 @@ export default function About() {
         "Flexible campus architecture supporting custom power densities, cooling technologies, and compute platforms.",
     },
     {
-      icon: Droplets,
-      title: "COOLING ARCHITECTURE",
-      headline: "Immersion | Liquid-to-Chip",
+      icon: Server,
+      title: "HYPERSCALE INFRASTRUCTURE",
+      headline: "50MW+ Dedicated Deployments",
       description:
-        "Cooling infrastructure designed to support immersion, direct-to-chip, or hyperscaler-specified cooling architectures — built for next-generation GPU clusters and extreme-density AI workloads.",
-      footer:
-        "Engineered to meet the highest performance requirements of modern data centres.",
-    },
-    {
-      icon: Gauge,
-      title: "PERFORMANCE DESIGN",
-      headline: "PUE 1.04 | Waterless & Ultra-Low Water",
-      description:
-        "High-efficiency infrastructure designed for waterless operation or ultra-low water configurations, depending on deployment architecture.",
-      footer:
-        "Eliminates traditional cooling tower dependency while optimizing resilience, energy performance, and ESG alignment across both power and compute systems.",
+        "Designed to support 50MW+ dedicated deployments for hyperscale AI operators, sovereign compute environments, and enterprise AI workloads. The campus supports custom design-build infrastructure tailored to tenant specifications.",
+      footer: "Vendor-agnostic architecture capable of meeting diverse compute, cooling, and network requirements — powered by a vertically integrated energy platform.",
     },
     {
       icon: Layers,
@@ -75,12 +73,30 @@ export default function About() {
       footer: "Designed to support low-latency AI workloads and hyperscale interconnect requirements.",
     },
     {
-      icon: Server,
-      title: "HYPERSCALE INFRASTRUCTURE",
-      headline: "50MW+ Dedicated Deployments",
+      icon: Droplets,
+      title: "COOLING ARCHITECTURE",
+      headline: "Immersion | Liquid-to-Chip",
       description:
-        "Designed to support 50MW+ dedicated deployments for hyperscale AI operators, sovereign compute environments, and enterprise AI workloads. The campus supports custom design-build infrastructure tailored to tenant specifications.",
-      footer: "Vendor-agnostic architecture capable of meeting diverse compute, cooling, and network requirements — powered by a vertically integrated energy platform.",
+        "AHI's cooling infrastructure supports immersion and direct-to-chip liquid cooling architectures designed for high-density AI workloads. Systems operate within manufacturer-approved thermal parameters, allowing deployed GPU platforms to maintain standard 3–5 year OEM warranty coverage and lifecycle support.",
+      footer:
+        "This enables customers to achieve higher compute density, improved efficiency, and stable thermal performance without compromising hardware reliability or manufacturer support.",
+    },
+    {
+      icon: Gauge,
+      title: "PERFORMANCE DESIGN",
+      headline: "PUE 1.04 | Waterless & Ultra-Low Water",
+      description:
+        "High-efficiency infrastructure designed for waterless operation or ultra-low water configurations, depending on deployment architecture.",
+      footer:
+        "Eliminates traditional cooling tower dependency while optimizing resilience, energy performance, and ESG alignment across both power and compute systems.",
+    },
+    {
+      icon: Cpu,
+      title: "VENDOR-AGNOSTIC ARCHITECTURE",
+      headline: "Platform Agnostic | Hardware Flexible",
+      description:
+        "Infrastructure designed to support multiple AI hardware platforms and deployment models, including NVIDIA, AMD, custom accelerators, and next-generation AI systems.",
+      footer: "Compute environments can be configured for immersion cooling, direct-to-chip cooling, or hyperscaler-specific architectures, ensuring long-term flexibility as AI hardware platforms evolve.",
     },
   ]
 
@@ -168,7 +184,7 @@ export default function About() {
             </p>
             <div className="flex flex-col lg:flex-row gap-8 items-stretch">
               {/* Left: capability items in single column */}
-              <div className="flex flex-col gap-3.5 flex-1 min-w-0 lg:max-w-[50%]">
+              <div className="flex flex-col gap-5 flex-1 min-w-0 lg:max-w-[50%] justify-between">
                 {(() => {
                   const items = [
                     { icon: Zap,           stat: "250MW+",    label: "250MW+ On-Site Prime Power" },
@@ -185,7 +201,7 @@ export default function About() {
                     return (
                       <motion.div
                         key={item.label}
-                        className="relative group flex items-center gap-4 px-5 py-4 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 min-h-[90px]"
+                        className="relative group flex items-center gap-4 px-5 py-2 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 min-h-[120px]"
                         initial={{ opacity: 0, x: -20 }}
                         animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                         transition={{ delay: 0.3 + i * 0.07 }}
@@ -200,14 +216,14 @@ export default function About() {
                 })()}
               </div>
               {/* Right: architecture diagram */}
-              <div className="flex-1 overflow-hidden">
+              <div className="flex-1 overflow-hidden flex items-center">
                 <Image
-                  src="/images/ahi-ecosystem-architecture.png"
-                  alt="AHI Ecosystem Architecture"
+                  src="/AI_archtecture.png"
+                  alt="AHI AI Architecture"
                   width={800}
-                  height={980}
+                  height={1100}
                   className="w-full h-full object-contain object-center"
-                  style={{ mixBlendMode: "screen", maxHeight: "100%" }}
+                  style={{ mixBlendMode: "screen" }}
                 />
               </div>
             </div>

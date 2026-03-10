@@ -115,35 +115,34 @@ export default function EnergyInfrastructure() {
           <div className="mb-12">
             <h3 className="text-3xl font-bold text-white mb-3">Energy Infrastructure Roadmap</h3>
             <p className="text-accent text-sm max-w-2xl">
-              Phased deployment of proven energy systems ensuring operational excellence at every stage while
-              positioning AHI for carbon-neutral evolution.
+              Phased deployment of resilient, on-site energy systems ensuring reliable AI infrastructure operations while advancing toward lower-carbon energy solutions.
             </p>
           </div>
 
           {[
             {
               year: "Phase 1",
-              title: "Core Cogeneration Launch",
-              desc: "Rolls-Royce MTU engines operational providing 250 MW baseload power—ensuring independent, reliable compute operations from day one.",
-              status: "Operational & In Construction",
+              title: "Prime Power Deployment",
+              desc: "Initial 10 MW of on-site generation operational by October 2026, establishing the foundation for independent, high-reliability compute infrastructure. Power capacity will scale beyond 240 MW over the following 3–5 years through modular engine deployment, enabling continuous expansion of the AI campus.",
+              status: "Under Construction",
             },
             {
               year: "Phase 2",
-              title: "Grid Interconnection",
-              desc: "Phase 3 AESO process enabling 150MW rapid-response grid export and import capability",
-              status: "In Progress",
+              title: "Battery Energy Storage Deployment",
+              desc: "Utility-scale battery energy storage systems (BESS) supporting grid stabilization, peak load management, and emergency resilience. The battery platform enhances operational reliability and enables energy arbitrage while supporting 99.99% uptime for AI infrastructure.",
+              status: "Planned",
             },
             {
               year: "Phase 3",
-              title: "Battery System Activation",
-              desc: "300 MW energy storage launch enabling grid stabilization, peak load management, and emergency resilience for 99.99% uptime guarantee.",
+              title: "Solar Integration",
+              desc: "Deployment of 50 MW of solar generation to supplement on-site energy production and further reduce carbon intensity while supporting long-term ESG objectives. Solar generation provides clean energy contribution to the campus while integrating with the battery and generation systems.",
               status: "Planned",
             },
             {
               year: "Phase 4",
-              title: "Solar Integration Deployment",
-              desc: "50 MW solar array activation delivering clean energy supplement, reducing grid dependency and enhancing environmental leadership.",
-              status: "Planned",
+              title: "Hydrogen Transition & Carbon Reduction",
+              desc: "Advancing long-term hydrogen readiness and carbon reduction strategies, including hydrogen blending capability and potential carbon capture integration. These initiatives support the progressive reduction of greenhouse gas emissions while maintaining reliable, dispatchable energy supply for the campus.",
+              status: "Long-Term Development",
             },
           ].map((phase, i) => (
             <motion.div
@@ -168,11 +167,13 @@ export default function EnergyInfrastructure() {
                     className={`w-2 h-2 rounded-full ${
                       phase.status === "Operational" || phase.status === "Operational & In Construction"
                         ? "bg-green-500"
-                        : phase.status === "In Progress"
+                        : phase.status === "Under Construction" || phase.status === "In Progress"
                           ? "bg-yellow-500"
                           : phase.status === "Planned"
                             ? "bg-accent"
-                            : "bg-muted-foreground"
+                            : phase.status === "Long-Term Development"
+                              ? "bg-blue-400"
+                              : "bg-muted-foreground"
                     }`}
                   />
                   <span className="text-xs font-semibold text-primary">{phase.status}</span>

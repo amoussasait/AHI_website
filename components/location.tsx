@@ -84,7 +84,7 @@ export default function Location() {
           >
             <div className="aspect-video bg-gradient-to-br from-secondary/50 to-secondary/20 rounded-lg mb-4 relative overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d320636.8739489283!2d-114.22950968906248!3d52.26881949999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5374e9e7c88c24c3%3A0xf0fb9c5dc3c29e3f!2sRed%20Deer%20County%2C%20AB%2C%20Canada!5e0!3m2!1sen!2sca!4v1709582947321!5m2!1sen!2sca"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2576.0!2d-113.7706349!3d52.3445436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5374ff0020797ee7%3A0x9bf30064ea6d7ec7!2sAHI%20Hub%20of%20Innovation!5e0!3m2!1sen!2sca!4v1709582947321!5m2!1sen!2sca"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

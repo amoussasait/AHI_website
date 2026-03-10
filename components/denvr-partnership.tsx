@@ -55,12 +55,15 @@ export default function DenvrPartnership() {
               className="h-16 w-auto opacity-90"
             />
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">Powered by Denvr Dataworks</h2>
-          <p className="text-xl text-accent max-w-3xl mx-auto mb-4">
-            AI-native modular infrastructure engineered for hyperscale, enterprise, and sovereign-scale compute.
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">AI Infrastructure Platform</h2>
+          <p className="text-xl text-accent max-w-5xl mx-auto mb-4">
+            Delivered through a network of leading infrastructure and cloud partners including Denvr DataWorks and other hyperscale, enterprise, and sovereign compute providers.
           </p>
-          <p className="text-lg text-accent/80 max-w-4xl mx-auto">
-            AHI partners with Denvr Dataworks — a platform backed by 14+ GW of hyperscale deployments and 200+ years of combined data center engineering experience — to deliver purpose-built AI infrastructure optimized for modern GPU workloads.
+          <p className="text-lg text-accent/80 max-w-6xl mx-auto mb-6">
+            AHI partners with leading infrastructure, cloud, and AI compute operators to deploy high-performance data centre environments on the campus. Strategic partners such as Denvr DataWorks bring modular AI infrastructure and operational expertise, enabling hyperscale, enterprise, and sovereign compute deployments tailored to modern GPU workloads.
+          </p>
+          <p className="text-lg text-primary font-semibold max-w-6xl mx-auto">
+            AHI provides the land, power, connectivity, and infrastructure platform enabling multiple AI infrastructure operators to deploy on the campus.
           </p>
         </motion.div>
 
@@ -83,6 +86,19 @@ export default function DenvrPartnership() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <h3 className="text-2xl font-bold text-white mb-3">Strategic Infrastructure Partners</h3>
+          <p className="text-lg text-accent">
+            Denvr DataWorks | Cloud Providers | HPC Operators | Enterprise AI Platforms
+          </p>
+        </motion.div>
       </div>
     </section>
   )

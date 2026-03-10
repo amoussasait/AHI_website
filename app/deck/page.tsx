@@ -953,7 +953,7 @@ export default function DeckPage() {
                   title: "POWER",
                   specs: [
                     "IT Load per MSC: 6.5 MW",
-                    "PUE: 1.037",
+                    "PUE: 1.04",
                     "Gross Power: ~6.74 MW",
                     "Backup Power: 25% of IT Load",
                     "Redundancy: N+1",

@@ -539,13 +539,16 @@ export default function PlatformPage() {
             <h2 className="text-4xl font-bold text-white mb-6 text-center">
               138 kV Transmission Interconnection
             </h2>
-            <p className="text-lg text-accent mb-8 text-center">
-              AHI is interconnected to Alberta's transmission network through a 138 kV connection.
+            <p className="text-lg text-accent mb-6 text-center max-w-4xl mx-auto">
+              AHI is interconnected to Alberta's transmission network through a dedicated 138 kV transmission connection, enabling grid participation, energy optimization, and long-term scalability for high-density AI infrastructure.
+            </p>
+            <p className="text-lg text-accent mb-8 text-center max-w-4xl mx-auto">
+              The project has advanced to Stage 3 of the AESO interconnection process, with the Generating Unit Owner's Contribution (GUOC) posted, demonstrating secured progress through Alberta's transmission approval framework.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div className="bg-black/40 rounded-xl border border-primary/20 p-6">
-                <h3 className="text-xl font-bold text-primary mb-4">Capacity:</h3>
+                <h3 className="text-xl font-bold text-primary mb-4">Capacity</h3>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0" />
@@ -555,17 +558,22 @@ export default function PlatformPage() {
                     <Check className="w-5 h-5 text-primary flex-shrink-0" />
                     <span className="text-accent">11 MW import capability</span>
                   </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                    <span className="text-accent">Ability to increase import capacity up to 150 MW (subject to approvals)</span>
+                  </li>
                 </ul>
               </div>
 
               <div className="bg-black/40 rounded-xl border border-primary/20 p-6">
-                <h3 className="text-xl font-bold text-primary mb-4">This structure provides:</h3>
+                <h3 className="text-xl font-bold text-primary mb-4">This Structure Provides</h3>
                 <ul className="space-y-3">
                   {[
                     "Export monetization",
                     "Import redundancy",
                     "Market participation",
                     "Ancillary service optimization via battery integration",
+                    "Microgrid balancing and intelligent load shedding for AI infrastructure",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -576,9 +584,12 @@ export default function PlatformPage() {
               </div>
             </div>
 
-            <p className="text-center text-primary font-semibold text-lg">
-              Grid interconnection is secured — reducing development risk and accelerating deployment.
-            </p>
+            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl border border-primary/30 p-8 text-center">
+              <h3 className="text-xl font-bold text-white mb-3">Strategic Advantage</h3>
+              <p className="text-accent text-lg">
+                Secured transmission interconnection significantly reduces development risk and enables accelerated deployment of large-scale AI infrastructure.
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -896,7 +907,7 @@ export default function PlatformPage() {
 
       <SectionDividerAnimated />
 
-      {/* INTERACTIVE SITE PLAN SECTION */}
+      {/* SITE MAP SECTION */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -907,14 +918,11 @@ export default function PlatformPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-              <span className="text-white">Interactive </span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Site Plan
+                Site Map
               </span>
             </h2>
-            <p className="text-lg text-accent max-w-3xl mx-auto mb-8">
-              Explore the AHI Data Centre campus with our interactive site plan. Zoom, pan, and navigate through different zones to understand the full scope of our infrastructure.
-            </p>
+            <p className="text-accent text-lg font-semibold">Hover over markers to explore infrastructure zones</p>
           </motion.div>
 
           <motion.div
@@ -922,15 +930,107 @@ export default function PlatformPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="rounded-xl overflow-hidden border border-primary/20 bg-black/40"
-            style={{ height: "80vh", minHeight: "600px" }}
+            className="relative rounded-xl overflow-visible border border-primary/20 bg-black/40 p-8"
           >
-            <iframe
-              src="/interactive-site-plan.html"
-              className="w-full h-full"
-              style={{ border: "none" }}
-              title="Interactive Site Plan"
-            />
+            <div className="relative">
+              <Image
+                src="/site map.png"
+                alt="AHI Site Map"
+                width={1920}
+                height={1080}
+                className="w-full h-auto rounded-lg shadow-2xl"
+                style={{
+                  filter: "drop-shadow(0 25px 50px rgba(0, 255, 200, 0.2))"
+                }}
+              />
+
+              {/* Interactive Hotspots */}
+              {[
+                {
+                  x: "15%",
+                  y: "25%",
+                  title: "West Campus Data Centres",
+                  description: "West Campus Data Centres with multiple data centre buildings arranged in rows along Blindman Drive and adjacent to a 20' High Conc. Sound Wall."
+                },
+                {
+                  x: "32%",
+                  y: "25%",
+                  title: "Main Campus Data Centres",
+                  description: "Main Campus Data Centres with multiple data centre buildings arranged in a grid layout."
+                },
+                {
+                  x: "58%",
+                  y: "25%",
+                  title: "East Campus Data Centres",
+                  description: "East Campus Data Centres with multiple data centre buildings arranged in rows."
+                },
+                {
+                  x: "78%",
+                  y: "25%",
+                  title: "East Campus Data Centres Expansion",
+                  description: "East Campus Data Centres Expansion designated for additional data centre buildings."
+                },
+                {
+                  x: "18%",
+                  y: "60%",
+                  title: "South Campus Data Centres",
+                  description: "South Campus Data Centres with multiple data centre buildings arranged in rows."
+                },
+                {
+                  x: "10%",
+                  y: "78%",
+                  title: "Water Storage Pond Area",
+                  description: "Water Storage Pond Area 200,203.96 sf (18,604.3 m²) and Line of 5.2m Road Widening."
+                },
+                {
+                  x: "30%",
+                  y: "50%",
+                  title: "The Heart / Campus Welcome Centre",
+                  description: "The Heart and Campus Welcome Centre with adjacent parking and internal roads."
+                },
+              ].map((hotspot, index) => (
+                <div
+                  key={index}
+                  className="absolute group cursor-pointer z-20"
+                  style={{
+                    left: hotspot.x,
+                    top: hotspot.y,
+                    transform: "translate(-50%, -50%)"
+                  }}
+                >
+                  {/* Hotspot Marker */}
+                  <div className="relative">
+                    {/* Pulsing Ring */}
+                    <div
+                      className="absolute inset-0 w-10 h-10 rounded-full border-2 border-primary animate-ping"
+                      style={{
+                        animationDuration: "2s"
+                      }}
+                    />
+                    {/* Static Outer Ring */}
+                    <div className="absolute inset-0 w-10 h-10 rounded-full border-2 border-primary/50" />
+                    {/* Main Marker */}
+                    <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 border-2 border-white shadow-2xl hover:scale-125 transition-all duration-300 group-hover:shadow-primary/50">
+                      <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm drop-shadow-lg">
+                        {index + 1}
+                      </div>
+                      {/* Inner Glow */}
+                      <div className="absolute inset-0 rounded-full bg-white/20 blur-sm" />
+                    </div>
+                  </div>
+
+                  {/* Popup on Hover */}
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-30">
+                    <div className="bg-black/95 border-2 border-primary rounded-xl p-5 shadow-2xl backdrop-blur-md">
+                      <h3 className="text-primary font-bold text-xl mb-2">{hotspot.title}</h3>
+                      <p className="text-white text-sm leading-relaxed">{hotspot.description}</p>
+                      {/* Arrow */}
+                      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-4 h-4 bg-black border-r-2 border-b-2 border-primary transform rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>

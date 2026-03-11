@@ -52,6 +52,7 @@ export default function Navigation({ scrolled = false }: NavigationProps) {
         { label: "Security", href: "/cloud/security" },
       ]
     },
+    { label: "Impact", href: "/impact" },
     { label: "Location", href: "/location" },
     { label: "HavenzHub", href: "/havenzhub" },
     { label: "Partners", href: "/partners" },

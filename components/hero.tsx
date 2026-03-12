@@ -26,7 +26,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center px-4 pt-20 overflow-hidden">
+    <section className="relative min-h-screen w-full flex items-center justify-center px-3 sm:px-4 pt-16 sm:pt-20 overflow-hidden">
 
       <motion.div
         className="relative z-10 max-w-6xl mx-auto text-center"
@@ -35,7 +35,7 @@ export default function Hero() {
         animate="visible"
       >
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-tight px-2"
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-balance leading-tight px-4 sm:px-2"
           variants={itemVariants}
         >
           <span className="text-white">{"Canada's Sovereign AI & Energy Campus"} </span>
@@ -44,14 +44,14 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        <motion.div className="mb-12 max-w-3xl mx-auto px-4" variants={itemVariants}>
-          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-2">
+        <motion.div className="mb-8 sm:mb-12 max-w-3xl mx-auto px-4" variants={itemVariants}>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-2">
             Prime, dispatchable, behind-the-meter power under construction in Alberta.
           </p>
-          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8">
             Initial capacity delivering in 2026.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl mx-auto">
             {[
               { icon: Zap, label: "250MW+ On-Site Prime Power" },
               { icon: ArrowLeftRight, label: "Grid Import & 150MW Export Capability" },
@@ -60,22 +60,22 @@ export default function Hero() {
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center justify-start gap-3 px-3 sm:px-4 lg:px-6 py-4 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center h-full min-h-[140px]"
+                className="flex flex-col items-center justify-start gap-2 sm:gap-3 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 text-center h-full min-h-[100px] sm:min-h-[120px]"
               >
-                <div className="w-11 h-11 rounded-full bg-primary/15 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-primary" />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary/15 flex items-center justify-center">
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                 </div>
-                <span className="text-sm sm:text-base text-accent/90 font-semibold leading-snug">{label}</span>
+                <span className="text-xs sm:text-sm md:text-base text-accent/90 font-semibold leading-tight">{label}</span>
               </div>
             ))}
           </div>
         </motion.div>
 
-        <motion.p className="text-base sm:text-lg text-muted-foreground italic whitespace-nowrap text-center w-full" variants={itemVariants}>
+        <motion.p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground italic text-center w-full px-4 max-w-4xl mx-auto leading-relaxed" variants={itemVariants}>
           {"Up to 300MW Battery Storage | 50MW Solar Generation | 44 Data Centre Halls | 180,000+ GPU Capacity"}
         </motion.p>
 
-        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 px-4 mt-8" variants={itemVariants}>
+        <motion.div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4 mt-6 sm:mt-8" variants={itemVariants}>
           <Link href="/contact" className="w-full sm:w-auto">
             <motion.button
               className="w-full sm:w-auto px-8 sm:px-10 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-base sm:text-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
@@ -98,7 +98,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 items-center justify-items-center max-w-5xl mx-auto"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 items-center justify-items-center max-w-5xl mx-auto px-4"
           variants={itemVariants}
         >
           {[
@@ -121,12 +121,12 @@ export default function Hero() {
           ].map((partner) => (
             <div
               key={partner.name}
-              className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border border-primary/30 rounded-lg hover:border-primary/60 transition-all h-20 sm:h-24 md:h-28 w-full flex items-center justify-center"
+              className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4 border border-primary/30 rounded-lg hover:border-primary/60 transition-all h-16 sm:h-20 md:h-24 w-full flex items-center justify-center"
             >
               <img
                 src={partner.logo || "/placeholder.svg"}
                 alt={partner.name}
-                className="max-h-12 sm:max-h-14 md:max-h-16 max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
+                className="max-h-10 sm:max-h-12 md:max-h-14 max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
             </div>
           ))}

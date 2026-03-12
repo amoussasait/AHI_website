@@ -112,7 +112,7 @@ export default function About() {
   ]
 
   return (
-    <section id="about" ref={ref} className="relative pt-10 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="about" ref={ref} className="relative pt-6 sm:pt-10 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           variants={containerVariants}
@@ -120,46 +120,46 @@ export default function About() {
           animate={inView ? "visible" : "hidden"}
         >
           {/* Section header */}
-          <motion.div className="text-center mb-16" variants={itemVariants}>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-balance">
+          <motion.div className="text-center mb-10 sm:mb-12 lg:mb-16" variants={itemVariants}>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-balance px-2">
               <span className="text-white">AI Infrastructure Built for </span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {"Scale, Security & Sovereignty"}
               </span>
             </h2>
-            <p className="text-lg text-accent max-w-4xl mx-auto leading-relaxed mb-2">
+            <p className="text-base sm:text-lg text-accent max-w-4xl mx-auto leading-relaxed mb-2 px-4">
               {"AHI delivers an integrated AI infrastructure platform powered by 250MW+ on-site prime energy, waterless high-density architecture, and flexible deployment models \u2014 Cloud, BYOC, and hyperscale."}
             </p>
-            <p className="text-lg text-primary font-semibold">
+            <p className="text-base sm:text-lg text-primary font-semibold px-4">
               Power delivery begins 2026.
             </p>
-            <p className="text-base text-muted-foreground mt-2">
+            <p className="text-sm sm:text-base text-muted-foreground mt-2 px-4">
               Built for enterprise AI, sovereign workloads, and global hyperscalers demanding secure, scalable infrastructure.
             </p>
           </motion.div>
 
           {/* 6 cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16 lg:mb-20">
             {cards.map((card, i) => {
               const Icon = card.icon
               return (
                 <motion.div
                   key={card.title}
-                  className="group p-6 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                  className="group p-4 sm:p-6 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
                   variants={itemVariants}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-primary-foreground" />
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-foreground" />
                     </div>
                     <span className="text-xs font-semibold tracking-widest text-primary uppercase">
                       {card.title}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{card.headline}</h3>
-                  <p className="text-accent/80 leading-relaxed mb-3">{card.description}</p>
-                  <div className="border-t border-primary/20 mt-3 mb-4" />
-                  <p className="text-accent/80 leading-relaxed">{card.footer}</p>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{card.headline}</h3>
+                  <p className="text-sm sm:text-base text-accent/80 leading-relaxed mb-2 sm:mb-3">{card.description}</p>
+                  <div className="border-t border-primary/20 mt-2 sm:mt-3 mb-3 sm:mb-4" />
+                  <p className="text-sm sm:text-base text-accent/80 leading-relaxed">{card.footer}</p>
                 </motion.div>
               )
             })}
@@ -167,7 +167,7 @@ export default function About() {
 
           {/* Divider */}
           <motion.div
-            className="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent my-16"
+            className="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent my-10 sm:my-12 lg:my-16"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -178,13 +178,13 @@ export default function About() {
 
           {/* AI Compute capabilities */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-3xl font-bold text-white text-center mb-3">AI Compute</h3>
-            <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2 sm:mb-3 px-4">AI Compute</h3>
+            <p className="text-center text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
               Integrated energy and infrastructure capabilities powering next-generation AI workloads.
             </p>
-            <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+            <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-stretch">
               {/* Left: capability items in single column */}
-              <div className="flex flex-col gap-5 flex-1 min-w-0 lg:max-w-[50%] justify-between">
+              <div className="flex flex-col gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0 lg:max-w-[50%] justify-between">
                 {(() => {
                   const items = [
                     { icon: Zap,           stat: "250MW+",    label: "250MW+ On-Site Prime Power" },
@@ -201,14 +201,14 @@ export default function About() {
                     return (
                       <motion.div
                         key={item.label}
-                        className="relative group flex items-center gap-4 px-5 py-2 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 min-h-[120px]"
+                        className="relative group flex items-center gap-2 sm:gap-3 lg:gap-4 px-3 sm:px-4 lg:px-5 py-2 rounded-xl border border-primary/20 bg-secondary/40 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 min-h-[70px] sm:min-h-[90px] lg:min-h-[120px]"
                         initial={{ opacity: 0, x: -20 }}
                         animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                         transition={{ delay: 0.3 + i * 0.07 }}
                       >
-                        <Icon className="w-6 h-6 text-primary shrink-0" />
-                        <span className="text-xl font-bold text-primary w-24 shrink-0">{item.stat}</span>
-                        <span className="text-base text-white font-medium leading-snug">{item.label}</span>
+                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary shrink-0" />
+                        <span className="text-base sm:text-lg lg:text-xl font-bold text-primary w-16 sm:w-20 lg:w-24 shrink-0">{item.stat}</span>
+                        <span className="text-sm sm:text-base text-white font-medium leading-snug">{item.label}</span>
                         <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       </motion.div>
                     )
@@ -231,7 +231,7 @@ export default function About() {
 
           {/* Divider */}
           <motion.div
-            className="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent my-16"
+            className="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent my-10 sm:my-12 lg:my-16"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -242,15 +242,15 @@ export default function About() {
 
           {/* Modular Super Cluster (MSC) Section */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-3xl font-bold text-white text-center mb-3">Modular Super Cluster (MSC)</h3>
-            <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2 sm:mb-3 px-4">Modular Super Cluster (MSC)</h3>
+            <p className="text-center text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
               Unit Specifications
             </p>
 
             {/* Power & Performance */}
-            <div className="mb-12">
-              <h4 className="text-2xl font-bold text-primary mb-6">Power & Performance</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="mb-10 sm:mb-12">
+              <h4 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6 px-4">Power & Performance</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {[
                   { label: "Power Per MSC", value: "6,500 kW (6.5 MW)" },
                   { label: "PUE", value: "1.04" },
@@ -264,13 +264,13 @@ export default function About() {
                 ].map((spec, i) => (
                   <motion.div
                     key={spec.label}
-                    className="p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                    className="p-3 sm:p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
                     initial={{ opacity: 0, y: 20 }}
                     animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ delay: 0.3 + i * 0.05 }}
                   >
-                    <div className="text-sm font-semibold text-primary mb-2">{spec.label}</div>
-                    <div className="text-base text-white">{spec.value}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-primary mb-1 sm:mb-2">{spec.label}</div>
+                    <div className="text-sm sm:text-base text-white">{spec.value}</div>
                   </motion.div>
                 ))}
               </div>
@@ -294,8 +294,8 @@ export default function About() {
 
             {/* What's Included */}
             <div>
-              <h4 className="text-2xl font-bold text-primary mb-6">What's Included with Every MSC</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+              <h4 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6 px-4">What's Included with Every MSC</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {[
                   "Utility-grade power delivery",
                   "Access to Reserved Backup Power",
@@ -307,13 +307,13 @@ export default function About() {
                 ].map((item, i) => (
                   <motion.div
                     key={item}
-                    className="flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                    className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl border border-primary/20 bg-secondary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
                     initial={{ opacity: 0, x: -20 }}
                     animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                     transition={{ delay: 0.3 + i * 0.05 }}
                   >
                     <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                    <span className="text-white">{item}</span>
+                    <span className="text-sm sm:text-base text-white">{item}</span>
                   </motion.div>
                 ))}
               </div>

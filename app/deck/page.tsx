@@ -5,24 +5,14 @@
  * Each .slide section = 1 page when exported to PDF
  */
 
-import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Check, Zap, Droplet, Building2, TrendingUp, Shield, Lock, Phone, Mail, User } from "lucide-react"
 import Image from "next/image"
-import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
 import DatacenterBackground from "@/components/datacenter-background"
+import SectionDividerAnimated from "@/components/section-divider-animated"
 
 export default function DeckPage() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   return (
     <>
@@ -63,9 +53,6 @@ export default function DeckPage() {
       <main className="w-full overflow-hidden bg-gradient-to-b from-secondary via-background to-background">
         <div className="no-print">
           <DatacenterBackground />
-        </div>
-        <div className="no-print">
-          <Navigation scrolled={scrolled} />
         </div>
 
         {/* SLIDE 1 - TITLE */}
@@ -108,6 +95,10 @@ export default function DeckPage() {
             </motion.div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 2 - THE OPPORTUNITY */}
         <section className="slide relative">
@@ -164,6 +155,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 3 - PLATFORM OVERVIEW */}
         <section className="slide relative">
@@ -230,6 +225,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 4 - INFRASTRUCTURE PLATFORM OVERVIEW */}
         <section className="slide relative">
           <div className="max-w-7xl mx-auto">
@@ -295,6 +294,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 4B - INFRASTRUCTURE PLATFORM OVERVIEW (CONTINUED) */}
         <section className="slide relative">
           <div className="max-w-7xl mx-auto">
@@ -357,6 +360,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 5 - MSC UNIT ECONOMICS */}
         <section className="slide relative">
@@ -464,6 +471,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 6 - MARKET COMPARISON */}
         <section className="slide relative">
           <div className="max-w-7xl mx-auto">
@@ -552,6 +563,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 7 - SOVEREIGN AI CLOUD */}
         <section className="slide relative">
@@ -661,6 +676,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 8 - CAMPUS MASTER PLAN */}
         <section className="slide relative">
           <div className="max-w-6xl mx-auto">
@@ -737,6 +756,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 9 - DEPLOYMENT TIMELINE */}
         <section className="slide relative">
           <div className="max-w-7xl mx-auto">
@@ -806,6 +829,10 @@ export default function DeckPage() {
           </div>
         </section>
 
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
+
         {/* SLIDE 10 - REGULATORY ADVANTAGE */}
         <section className="slide relative">
           <div className="max-w-7xl mx-auto">
@@ -861,6 +888,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 11 - SECURITY & COMPLIANCE */}
         <section className="slide relative">
@@ -931,6 +962,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 12 - TECHNICAL SPECIFICATIONS */}
         <section className="slide relative">
@@ -1026,6 +1061,10 @@ export default function DeckPage() {
             </div>
           </div>
         </section>
+
+        <div className="no-print">
+          <SectionDividerAnimated />
+        </div>
 
         {/* SLIDE 13 - CONTACT/CTA */}
         <section className="slide relative">
